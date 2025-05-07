@@ -31,19 +31,16 @@ const BannerContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  font-weight: 700;
-  text-transform: uppercase;
+  font-family: 'Tilt Prism', sans-serif;
+  font-size: clamp(5.2rem, 6.5vw, 3.8rem);
+  font-weight: 400;
   color: #f7e7a1;
-  text-shadow: 
-    0 0 10px rgba(247, 231, 161, 0.5),
-    0 0 20px rgba(124, 58, 237, 0.3);
+  text-shadow: 0 0 15px rgba(247, 231, 161, 0.6), 0 0 25px rgba(124, 58, 237, 0.4);
+  margin: 0 0 0.5rem;
   letter-spacing: 0.05em;
-  z-index: 2;
 
-  @media (max-width: 639px) {
-    font-size: clamp(2rem, 6vw, 3rem);
+  @media (max-width: 768px) {
+    font-size: clamp(1.6rem, 4.5vw, 2.3rem);
   }
 `;
 
