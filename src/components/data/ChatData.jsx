@@ -1,0 +1,58 @@
+export const chatMessages = [
+  {
+    id: 1,
+    username: "ShadowFox",
+    avatar: "https://i.pinimg.com/736x/79/63/60/7963605d26c1a513cdfacd49746a907c.jpg",
+    message: "Anyone tried the new mission on level 5? 🔥",
+    time: "22:14",
+  },
+  {
+    id: 2,
+    username: "BloodCrow",
+    avatar: "https://i.pinimg.com/736x/57/c9/94/57c9943c663398de2b4cef8458995d2f.jpg",
+    message: "Yeah, and the rewards are insane! 5K XP drop.",
+    time: "22:16",
+  },
+  {
+    id: 3,
+    username: "ReaperGrrl",
+    avatar: "https://i.pinimg.com/736x/9c/7b/71/9c7b71e0ebfb732d561ad707c31bbbc1.jpg",
+    message: "Can’t wait to customize my new ride after that 💀",
+    time: "22:17",
+  },
+  {
+    id: 4,
+    username: "SteelJaw",
+    avatar: "https://i.pinimg.com/736x/3e/77/cd/3e77cdcb272655dac19ee96c48b7e3b3.jpg",
+    message: "Make sure you bring grenades. Enemies are armored now.",
+    time: "22:18",
+  },
+  {
+    id: 5,
+    username: "Nox",
+    avatar: "https://i.pinimg.com/736x/d0/d2/e3/d0d2e340513ecc4933f1a463d5f63769.jpg",
+    message: "I’m online. Let’s squad up for a heist.",
+    time: "22:19",
+  },
+  {
+    id: 6,
+    username: "NeonViper",
+    avatar: "https://i.pinimg.com/736x/fd/92/27/fd922726ad4fe78103179165c169d08e.jpg",
+    message: "Just snagged a rare mod from the black market. Worth it! 😎",
+    time: "22:20",
+  },
+  {
+    id: 7,
+    username: "CyberWraith",
+    avatar: "https://i.pinimg.com/736x/c9/d7/8e/c9d78eaa7438bfc8cc828144f56e4366.jpg",
+    message: "Yo, anyone hitting the underground race tonight?",
+    time: "22:21",
+  },
+  {
+    id: 8,
+    username: "DuskBlade",
+    avatar: "https://i.pinimg.com/736x/ed/c8/0d/edc80d3a9c139172ca7c0af469076b28.jpg",
+    message: "Need a hacker for the vault job. DM me if you’re in.",
+    time: "22:22",
+  },
+];
