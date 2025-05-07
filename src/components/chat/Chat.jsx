@@ -1,365 +1,299 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import { gsap } from 'gsap';
-import Lottie from 'react-lottie';
-import { chatMessages } from '../data/ChatData';
+import Lottie from 'lottie-react';
 import chatBg from '../../assets/bg.png';
 import MapCar from '../../assets/Animation - 1746629343650 (1).json';
+import { chatMessages } from '../data/ChatData';
 
-const GlobalStyles = createGlobalStyle`
-  @keyframes glow {
-    0% { box-shadow: 0 0 4px rgba(247, 231, 161, 0.2); }
-    50% { box-shadow: 0 0 12px rgba(247, 231, 161, 0.5), 0 0 16px rgba(124, 58, 237, 0.3); }
-    100% { box-shadow: 0 0 4px rgba(247, 231, 161, 0.2); }
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-  }
-`;
-
-const ChatContainer = styled.div`
-  height: 100vh;
+const ChatContainer = styled.section`
+  min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.6), rgba(50, 20, 70, 0.7)), url(${chatBg});
+  background: linear-gradient(135deg, rgba(15, 10, 30, 0.75), rgba(50, 20, 70, 0.8)), url(${chatBg});
   background-size: cover;
   background-position: center;
   display: flex;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.6);
+  transform: translate3d(0, 0, 0);
 
   @media (max-width: 768px) {
     flex-direction: column;
+    padding: 1rem;
+    min-height: 80vh;
   }
 `;
 
-const ChatPanel = styled.div`
-  width: 40%;
-  padding: 1.5rem;
+const AnimationContainer = styled.div`
+  flex: 1;
+  max-width: 40%;
+  height: 90vh;
   display: flex;
-  flex-direction: column;
-  background: rgba(15, 10, 30, 0.8);
-  backdrop-filter: blur(12px);
-  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 
   @media (max-width: 768px) {
-    width: 100%;
-    height: 70vh;
-    padding: 1rem;
+    max-width: 100%;
+    height: 30vh;
+    margin-bottom: 1rem;
   }
 `;
 
-const MessagesContainer = styled.div`
+const ChatWrapper = styled.div`
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  background: linear-gradient(135deg, rgba(26, 14, 42, 0.9), rgba(60, 26, 90, 0.9));
+  border-radius: 12px;
+  border: 2px solid rgba(247, 231, 161, 0.2);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    height: 50vh;
+    flex: 1;
+  }
+`;
+
+const MessageContainer = styled.div`
   flex: 1;
+  padding: 1.5rem;
   overflow-y: auto;
-  padding-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
   &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    background: rgba(247, 231, 161, 0.1);
-    border-radius: 2px;
+    width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #f7e7a1;
-    border-radius: 2px;
+    background: #facc15;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
   }
 `;
 
 const Message = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 0.75rem;
-  background: rgba(30, 20, 50, 0.6);
-  border-left: 3px solid #f7e7a1;
-  padding: 10px 14px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  animation: glow 2.5s infinite ease-in-out;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  @media (max-width: 768px) {
-    padding: 8px 10px;
-    gap: 6px;
-  }
+  gap: 0.75rem;
 `;
 
 const Avatar = styled.img`
-  width: 36px;
-  height: 36px;
-  object-fit: cover;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 2px solid #f7e7a1;
-  box-shadow: 0 0 6px rgba(247, 231, 161, 0.3);
+  border: 1px solid #facc15;
+  object-fit: cover;
 
   @media (max-width: 768px) {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
   }
 `;
 
 const MessageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+  flex: 1;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(247, 231, 161, 0.2);
+  transition: all 0.3s ease;
 
-const Username = styled.span`
-  font-weight: 700;
-  font-size: clamp(0.85rem, 0.9vw, 0.95rem);
-  color: #f7e7a1;
-  text-shadow: 0 0 3px rgba(247, 231, 161, 0.4);
-`;
-
-const Text = styled.span`
-  font-size: clamp(0.8rem, 0.85vw, 0.9rem);
-  color: #d1d5db;
-  margin-top: 3px;
-  line-height: 1.4;
-`;
-
-const Time = styled.span`
-  font-size: clamp(0.65rem, 0.75vw, 0.75rem);
-  color: #94a3b8;
-  margin-top: 3px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-  padding: 0.4rem;
-  background: rgba(15, 10, 30, 0.9);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-
-  @media (max-width: 768px) {
-    gap: 0.5rem;
-    padding: 0.4rem;
+  &:hover {
+    border-color: #facc15;
+    box-shadow: 0 0 10px rgba(247, 231, 161, 0.4);
   }
+`;
+
+const Username = styled.div`
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  color: #f7e7a1;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+`;
+
+const MessageText = styled.p`
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.5;
+`;
+
+const Timestamp = styled.span`
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  color: #8b8b8b;
+  margin-left: 0.5rem;
+`;
+
+const InputContainer = styled.form`
+  display: flex;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid #facc15;
+  position: sticky;
+  bottom: 0;
 `;
 
 const Input = styled.input`
   flex: 1;
-  padding: 0.6rem;
-  border: none;
-  border-radius: 6px;
-  background: rgba(50, 20, 70, 0.8);
+  padding: 0.75rem;
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
   color: #d1d5db;
-  font-size: clamp(0.85rem, 0.9vw, 0.95rem);
+  background: rgba(26, 14, 42, 0.9);
+  border: 1px solid #facc15;
+  border-radius: 6px;
   outline: none;
-  transition: all 0.3s ease;
 
   &:focus {
-    box-shadow: 0 0 12px rgba(247, 231, 161, 0.5);
-    background: rgba(50, 20, 70, 0.95);
-  }
-
-  &::placeholder {
-    color: #94a3b8;
+    border-color: #f7e7a1;
+    box-shadow: 0 0 8px rgba(247, 231, 161, 0.4);
   }
 
   @media (max-width: 768px) {
     padding: 0.5rem;
-    font-size: clamp(0.8rem, 0.85vw, 0.9rem);
   }
 `;
 
 const SendButton = styled.button`
-  padding: 0.6rem 1.2rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  color: #1f1f1f;
   background: linear-gradient(45deg, #f7e7a1, #facc15);
   border: none;
   border-radius: 6px;
-  color: #1f1f1f;
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(0.85rem, 0.9vw, 0.95rem);
-  font-weight: 600;
+  margin-left: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(247, 231, 161, 0.2);
   transition: all 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(247, 231, 161, 0.5);
+    box-shadow: 0 0 10px rgba(247, 231, 161, 0.5);
   }
 
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
-    font-size: clamp(0.8rem, 0.85vw, 0.9rem);
   }
 `;
 
-const AnimationPanel = styled.div`
-  width: 60%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.7), rgba(50, 20, 70, 0.8));
-  backdrop-filter: blur(12px);
-  border-left: 2px solid #f7e7a1;
-  box-shadow: 0 0 12px rgba(247, 231, 161, 0.3);
-  position: relative;
-  animation: pulse 4s infinite ease-in-out;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(247, 231, 161, 0.05), rgba(124, 58, 237, 0.05));
-    opacity: 0.3;
-    pointer-events: none;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: 30vh;
-    padding: 0.5rem;
-    border-left: none;
-    border-top: 2px solid #f7e7a1;
-  }
-`;
-
-const LottieWrapper = styled.div`
-  width: 70%;
-  height: 70%;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 12px rgba(247, 231, 161, 0.3);
-`;
-
-const Chat = ({ chatRef }) => {
+const Chat = () => {
   const [messages, setMessages] = useState(chatMessages);
   const [input, setInput] = useState('');
-  const messagesEndRef = useRef(null);
+  const messageContainerRef = useRef(null);
   const animationRef = useRef(null);
 
-  const userAvatar = 'https://i.pinimg.com/736x/2b/d7/8e/2bd78e36c66253b4eb55df8b8acc3dbc.jpg';
-
   const randomResponses = [
-    'Yo, that’s wild! What’s next?',
-    'Haha, love the vibe! Keep it up!',
-    'No way, you serious? Spill the tea!',
-    'Epic move, gamer! What’s your next play?',
-    'Chill, I’m just cruising in the shadows.',
-    'Bet, let’s crank up the chaos!',
-    'Smooth talker! Got more of that?',
+    'Yo, that’s wild! Wanna squad up later? 😎',
+    'Nice one! Have you checked the black market yet?',
+    'Bet you’re dominating! Got any pro tips? 🔥',
+    'Whoa, intense! You hitting the races tonight?',
+    'Sweet move! DM me if you need a hacker. 💾',
+    'Epic! Let’s grind some XP on the next mission.',
+    'That’s the spirit! You in for the vault job?',
   ];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const formatDateTime = () => {
+    const now = new Date();
+    const date = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const time = now.toTimeString().slice(0, 5); // HH:mm
+    return `${date} ${time}`;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    // Add user message
+    const userMessage = {
+      id: messages.length + 1,
+      username: 'You',
+      avatar: 'https://i.pinimg.com/736x/c9/d7/8e/c9d78eaa7438bfc8cc828144f56e4366.jpg',
+      message: input,
+      time: formatDateTime(),
+    };
+
+    // Add random response
+    const randomResponse = {
+      id: messages.length + 2,
+      username: 'MidnightBot',
+      avatar: 'https://i.pinimg.com/736x/fd/92/27/fd922726ad4fe78103179165c169d08e.jpg',
+      message: randomResponses[Math.floor(Math.random() * randomResponses.length)],
+      time: formatDateTime(),
+    };
+
+    setMessages([...messages, userMessage, randomResponse]);
+    setInput('');
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    // Scroll to bottom of messages
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+    }
 
-  useEffect(() => {
+    // Animate chat container
+    gsap.fromTo(
+      messageContainerRef.current,
+      { opacity: 0, x: 50 },
+      { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }
+    );
+
+    // Animate Lottie container
     gsap.fromTo(
       animationRef.current,
-      { opacity: 0, scale: 0.9 },
-      { opacity: 1, scale: 1, duration: 1.5, ease: 'power3.out', delay: 0.3 }
+      { opacity: 0, x: -50 },
+      { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }
     );
-  }, []);
-
-  const handleSendMessage = () => {
-    if (input.trim()) {
-      const newUserMessage = {
-        id: messages.length + 1,
-        username: 'You',
-        message: input,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: userAvatar,
-      };
-
-      const randomResponse = {
-        id: messages.length + 2,
-        username: `ShadowGamer${Math.floor(Math.random() * 100)}`,
-        message: randomResponses[Math.floor(Math.random() * randomResponses.length)],
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: `https://i.pravatar.cc/40?img=${Math.floor(Math.random() * 70)}`,
-      };
-
-      setMessages([...messages, newUserMessage, randomResponse]);
-      setInput('');
-
-      gsap.fromTo(
-        `.message-${newUserMessage.id}`,
-        { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }
-      );
-      gsap.fromTo(
-        `.message-${randomResponse.id}`,
-        { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out', delay: 0.2 }
-      );
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSendMessage();
-    }
-  };
-
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: MapCar,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  };
+  }, [messages]);
 
   return (
-    <>
-      <GlobalStyles />
-      <ChatContainer ref={chatRef}>
-        <ChatPanel>
-          <MessagesContainer>
-            {messages.map((msg) => (
-              <Message key={msg.id} className={`message-${msg.id}`}>
-                <Avatar src={msg.avatar} alt={msg.username} />
-                <MessageContent>
-                  <Username>{msg.username}</Username>
-                  <Text>{msg.message}</Text>
-                  <Time>{msg.time}</Time>
-                </MessageContent>
-              </Message>
-            ))}
-            <div ref={messagesEndRef} />
-          </MessagesContainer>
-          <InputContainer>
-            <Input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              aria-label="Chat message input"
-            />
-            <SendButton onClick={handleSendMessage} aria-label="Send message">
-              Send
-            </SendButton>
-          </InputContainer>
-        </ChatPanel>
-        <AnimationPanel ref={animationRef}>
-          <LottieWrapper>
-            <Lottie options={lottieOptions} />
-          </LottieWrapper>
-        </AnimationPanel>
-      </ChatContainer>
-    </>
+    <ChatContainer>
+      <AnimationContainer ref={animationRef}>
+        <Lottie animationData={MapCar} loop={true} style={{ maxWidth: '100%', maxHeight: '100%' }} />
+      </AnimationContainer>
+      <ChatWrapper>
+        <MessageContainer ref={messageContainerRef}>
+          {messages.map((msg) => (
+            <Message key={msg.id}>
+              <Avatar src={msg.avatar} alt={`${msg.username}'s avatar`} />
+              <MessageContent>
+                <Username>
+                  {msg.username} <Timestamp>{msg.time}</Timestamp>
+                </Username>
+                <MessageText>{msg.message}</MessageText>
+              </MessageContent>
+            </Message>
+          ))}
+        </MessageContainer>
+        <InputContainer onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type a message..."
+            aria-label="Chat message input"
+          />
+          <SendButton type="submit" aria-label="Send message">Send</SendButton>
+        </InputContainer>
+      </ChatWrapper>
+    </ChatContainer>
   );
 };
 
