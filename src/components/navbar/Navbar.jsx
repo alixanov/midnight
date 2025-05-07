@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { gsap } from 'gsap';
-import { Twitter, Menu, Close, Home, Assistant } from '@mui/icons-material';
+import { X, Menu, Close, Home, Chat, Explore } from '@mui/icons-material';
 
 // Global keyframes for animations
 const GlobalStyles = createGlobalStyle`
@@ -24,18 +24,18 @@ const StyledNavbar = styled.nav`
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  transform: translate3d(0, 0, 0); /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
 
   @media (max-width: 768px) {
     padding: 0.75rem 1.5rem;
-    min-height: 60px; /* Ensure navbar has consistent height */
+    min-height: 60px;
   }
 `;
 
 const Logo = styled.div`
-  font-family: 'Playfair Display', serif;
+  font-family: 'Tilt Prism', sans-serif;
   font-size: clamp(1.5rem, 2vw, 1.8rem);
-  font-weight: 700;
+  font-weight: 400;
   color: #f7e7a1;
   text-shadow: 0 0 8px rgba(247, 231, 161, 0.5);
   cursor: pointer;
@@ -52,7 +52,7 @@ const Logo = styled.div`
 
 const NavLinks = styled.div`
   display: flex;
-  gap: 1.5rem; /* Increased for better desktop spacing */
+  gap: 1.5rem;
   align-items: center;
   opacity: 1;
   visibility: visible;
@@ -61,27 +61,27 @@ const NavLinks = styled.div`
     display: ${props => (props.isOpen ? 'flex' : 'none')};
     flex-direction: column;
     position: fixed;
-    top: 60px; /* Match navbar height */
+    top: 60px;
     left: 0;
     right: 0;
-    height: calc(100vh - 60px); /* Full height minus navbar */
+    height: calc(100vh - 60px);
     background: linear-gradient(135deg, rgba(15, 10, 30, 0.95), rgba(50, 20, 70, 0.95));
     backdrop-filter: blur(10px);
     padding: 2rem 1.5rem;
-    margin-top: 0; /* Explicitly set to avoid overlap */
+    margin-top: 0;
     justify-content: flex-start;
     align-items: center;
     z-index: 999;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    overflow-y: auto; /* Allow scrolling if needed */
-    gap: 1.5rem; /* Consistent gap for mobile */
+    overflow-y: auto;
+    gap: 1.5rem;
   }
 `;
 
 const NavButton = styled.button`
-  font-family: 'Inter', sans-serif;
+  font-family: 'Russo One', sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
-  font-weight: 600;
+  font-weight: 400;
   padding: 0.75rem 1.5rem;
   color: #1f1f1f;
   background: linear-gradient(45deg, #f7e7a1, #facc15);
@@ -97,6 +97,7 @@ const NavButton = styled.button`
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(247, 231, 161, 0.6), 0 0 20px rgba(124, 58, 237, 0.4);
+    text-shadow: 0 0 8px rgba(247, 231, 161, 0.5);
   }
 
   &:focus {
@@ -112,16 +113,16 @@ const NavButton = styled.button`
     padding: 0.8rem 2rem;
     font-size: clamp(1rem, 1.2vw, 1.1rem);
     width: 100%;
-    max-width: 300px; /* Limit width for better appearance */
+    max-width: 300px;
     justify-content: center;
     min-height: 48px;
   }
 `;
 
 const FollowButton = styled.a`
-  font-family: 'Inter', sans-serif;
+  font-family: 'Russo One', sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
-  font-weight: 600;
+  font-weight: 400;
   padding: 0.75rem 1.5rem;
   color: #1f1f1f;
   background: linear-gradient(45deg, #f7e7a1, #facc15);
@@ -138,6 +139,7 @@ const FollowButton = styled.a`
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(247, 231, 161, 0.6), 0 0 20px rgba(124, 58, 237, 0.4);
+    text-shadow: 0 0 8px rgba(247, 231, 161, 0.5);
   }
 
   &:focus {
@@ -153,7 +155,7 @@ const FollowButton = styled.a`
     padding: 0.8rem 2rem;
     font-size: clamp(1rem, 1.2vw, 1.1rem);
     width: 100%;
-    max-width: 300px; /* Limit width for better appearance */
+    max-width: 300px;
     justify-content: center;
     min-height: 48px;
   }
@@ -166,7 +168,7 @@ const Hamburger = styled.button`
   color: #f7e7a1;
   font-size: 1.8rem;
   cursor: pointer;
-  z-index: 1001; /* Ensure hamburger is above menu */
+  z-index: 1001;
 
   @media (max-width: 768px) {
     display: flex;
@@ -179,7 +181,7 @@ const Hamburger = styled.button`
   }
 `;
 
-const Navbar = ({ bannerRef, chatRef }) => {
+const Navbar = ({ bannerRef, chatRef, chatBannerRef }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navLinksRef = useRef(null);
   const hamburgerRef = useRef(null);
@@ -187,7 +189,6 @@ const Navbar = ({ bannerRef, chatRef }) => {
   useEffect(() => {
     if (navLinksRef.current) {
       const links = navLinksRef.current.children;
-      // Run animation only once on mount for desktop
       if (window.innerWidth > 768) {
         gsap.fromTo(
           links,
@@ -277,15 +278,19 @@ const Navbar = ({ bannerRef, chatRef }) => {
         </Hamburger>
         <NavLinks isOpen={isOpen} ref={navLinksRef}>
           <NavButton type="button" onClick={() => handleScroll(bannerRef)}>
-            <Twitter sx={{ fontSize: 24 }} />
+            <Home sx={{ fontSize: 24 }} />
             <span className="text">Banner</span>
           </NavButton>
           <NavButton type="button" onClick={() => handleScroll(chatRef)}>
-            <Home sx={{ fontSize: 24 }} />
+            <Chat sx={{ fontSize: 24 }} />
             <span className="text">Chat</span>
           </NavButton>
+          <NavButton type="button" onClick={() => handleScroll(chatBannerRef)}>
+            <Explore sx={{ fontSize: 24 }} />
+            <span className="text">Server</span>
+          </NavButton>
           <FollowButton href="https://x.com/" target="_blank" rel="noopener noreferrer">
-            <Assistant sx={{ fontSize: 24 }} />
+            <X sx={{ fontSize: 24 }} />
             <span className="text">Follow Us</span>
           </FollowButton>
         </NavLinks>

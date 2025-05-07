@@ -47,7 +47,7 @@ const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 80vh;
-  background: linear-gradient(135deg, rgba(26, 14, 42, 0.9), rgba(60, 26, 90, 0.9));
+  background: linear-gradient(135deg, rgba(26, 14, 42, 0.22), rgba(60, 26, 90, 0.24));
   border-radius: 12px;
   border: 2px solid rgba(247, 231, 161, 0.2);
   backdrop-filter: blur(8px);
@@ -106,7 +106,7 @@ const Avatar = styled.img`
 
 const MessageContent = styled.div`
   flex: 1;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.27);
   padding: 0.75rem;
   border-radius: 8px;
   border: 1px solid rgba(247, 231, 161, 0.2);

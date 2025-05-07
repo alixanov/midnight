@@ -6,14 +6,13 @@ import Footer from "../footer/Footer";
 import ChatBanner from "../chat-banner/ChatBanner";
 
 const Main = () => {
-  // Create refs for components
   const bannerRef = useRef(null);
   const chatBannerRef = useRef(null);
   const chatRef = useRef(null);
 
   return (
     <div>
-      <Navbar bannerRef={bannerRef} chatRef={chatRef} />
+      <Navbar bannerRef={bannerRef} chatRef={chatRef} chatBannerRef={chatBannerRef} />
       <div ref={bannerRef}>
         <Banner chatRef={chatRef} />
       </div>

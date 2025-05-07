@@ -70,12 +70,10 @@ const Title = styled.h2`
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
   width: 100%;
   z-index: 2;
-
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -83,11 +81,10 @@ const CardGrid = styled.div`
 `;
 
 const Card = styled.div`
-  background: linear-gradient(135deg, rgba(26, 14, 42, 0.9), rgba(60, 26, 90, 0.9));
+  background: linear-gradient(135deg, rgba(26, 14, 42, 0.1), rgba(60, 26, 90, 0.31));
   border-radius: 12px;
   padding: 2rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
   text-align: center;
   border: 2px solid rgba(247, 231, 161, 0.2);
@@ -123,6 +120,12 @@ const Card = styled.div`
     padding: 1.5rem;
   }
 `;
+const CardTxt = styled.h3`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
 
 const CardImage = styled.img`
   width: 100%;
@@ -151,6 +154,9 @@ const CardTitle = styled.h3`
     font-size: clamp(1rem, 1.6vw, 1.2rem);
   }
 `;
+
+
+
 
 const CardDescription = styled.p`
   font-family: 'Russo One', sans-serif;
@@ -243,8 +249,10 @@ const ChatBanner = ({ chatRef }) => {
         {servers.map((server, index) => (
           <Card key={index} className="card">
             <CardImage src={server.image} alt={`${server.name} server`} />
-            <CardTitle>{server.name}</CardTitle>
-            <CardDescription>{server.description}</CardDescription>
+           <CardTxt>
+              <CardTitle>{server.name}</CardTitle>
+              <CardDescription>{server.description}</CardDescription>
+           </CardTxt>
           </Card>
         ))}
       </CardGrid>
