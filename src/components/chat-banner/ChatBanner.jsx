@@ -146,7 +146,7 @@ const CardTxt = styled.div`
   align-items: flex-start;
   justify-content: center;
   text-align: left;
-  padding-left: 0.8rem;
+  padding-left: 1rem;
 `;
 
 const CardImage = styled.img`
@@ -168,7 +168,7 @@ const CardTitle = styled.h3`
   font-weight: 700;
   color: ${props => props.color || '#f7e7a1'};
   text-shadow: ${props => `0 0 6px ${props.color ? props.color + '80' : 'rgba(247, 231, 161, 0.4)'}`};
-  margin: 0 0 0.2rem;
+  margin: 0 0 1rem;
   letter-spacing: 0.03em;
   line-height: 1.2;
 
@@ -183,7 +183,7 @@ const CardDescription = styled.p`
   font-weight: 700;
   color: #d1d5db;
   line-height: 1.2;
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.5rem;
   letter-spacing: 0.02em;
   white-space: nowrap;
   overflow: hidden;
@@ -199,7 +199,7 @@ const JoinButton = styled.button`
   font-family: 'Russo One', sans-serif;
   font-size: clamp(0.8rem, 0.9vw, 0.9rem);
   font-weight: 700;
-  padding: 0.4rem 0.8rem;
+  padding: 0.1rem 0.8rem;
   color: #1f1f1f;
   background: ${props =>
     props.locked
@@ -217,7 +217,7 @@ const JoinButton = styled.button`
   align-items: center;
   gap: 0.2rem;
   opacity: ${props => (props.locked ? 0.7 : 1)};
-  min-height: 48px;
+  min-height: 40px;
 
   &:hover {
     ${props =>
