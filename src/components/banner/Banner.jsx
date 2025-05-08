@@ -34,7 +34,8 @@ const LeftSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   max-width: 40%;
-  gap: 1rem;
+  gap: 0.5rem;
+    margin: -4rem 0 0 0;
 
   @media (max-width: 768px) {
     max-width: 100%;
@@ -48,6 +49,8 @@ const RightSection = styled.div`
   align-items: flex-end;
   max-width: 40%;
   gap: 1rem;
+      margin: -4rem 0 0 0;
+
 
   @media (max-width: 768px) {
     max-width: 100%;
@@ -56,7 +59,7 @@ const RightSection = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 300px;
+  width: 350px;
   height: auto;
   object-fit: contain;
 
@@ -78,6 +81,8 @@ const WatchTrailerButton = styled.button`
   color: #ffffff;
   background: #ae206e;
   border: none;
+    margin: -4rem 0 0 0;
+
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(174, 32, 110, 0.4);
