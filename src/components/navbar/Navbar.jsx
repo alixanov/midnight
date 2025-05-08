@@ -267,7 +267,7 @@ const Navbar = ({ bannerRef, chatRef, chatBannerRef }) => {
     <>
       <GlobalStyles />
       <StyledNavbar>
-        <Logo onClick={() => handleScroll(bannerRef)}>MIDNIGHT</Logo>
+        <Logo onClick={() => handleScroll(bannerRef)}>GTA 6 Intro</Logo>
         <Hamburger
           ref={hamburgerRef}
           onClick={toggleMenu}

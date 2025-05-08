@@ -1,58 +1,77 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { gsap } from 'gsap';
 import { Home, ExitToApp } from '@mui/icons-material';
 import { chatMessages } from '../data/ChatData';
 
+// Pulsating border animation
+const pulse = keyframes`
+  0% { box-shadow: 0 0 5px #fad028, 0 0 10px rgba(250, 208, 40, 0.5); }
+  50% { box-shadow: 0 0 10px #fad028, 0 0 20px rgba(250, 208, 40, 0.7); }
+  100% { box-shadow: 0 0 5px #fad028, 0 0 10px rgba(250, 208, 40, 0.5); }
+`;
+
+// Typing dots animation
+const typingDots = keyframes`
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  100% { content: '.'; }
+`;
+
 const ChatContainer = styled.section`
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.12), rgba(50, 20, 70, 0.16)), url(${props => props.chatBg});
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(32, 14, 48, 0.53), rgba(48, 21, 72, 0.61)), url(${props => props.chatBg});
   background-size: cover;
   background-position: center;
-  padding: 2rem;
+  padding: 1.5rem;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.7);
   transform: translate3d(0, 0, 0);
+  backdrop-filter: blur(10px);
 
   @media (max-width: 768px) {
-    padding: 0.75rem;
+    padding: 0.5rem;
     min-height: 100vh;
   }
 `;
 
 const HomeButton = styled.button`
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: rgba(26, 14, 42, 0.9);
-  border: 1px solid #facc15;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: #200e30;
+  border: 1px solid #fad028;
   border-radius: 50%;
-  padding: 0.5rem;
+  padding: 0.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 3;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
 
   & svg {
-    color: #facc15;
-    font-size: 1.5rem;
+    color: #fad028;
+    font-size: 1.2rem;
   }
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(247, 231, 161, 0.5);
-    border-color: #f7e7a1;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 8px rgba(250, 208, 40, 0.6);
+    border-color: #fad028;
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(247, 231, 161, 0.4);
+    box-shadow: 0 0 0 2px rgba(250, 208, 40, 0.5);
   }
 
   @media (max-width: 768px) {
@@ -61,114 +80,84 @@ const HomeButton = styled.button`
     padding: 0.3rem;
 
     & svg {
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
   }
 `;
 
-const LogoutButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(26, 14, 42, 0.9);
-  border: 1px solid #facc15;
-  border-radius: 50%;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 3;
-  backdrop-filter: blur(4px);
-
-  & svg {
-    color: #facc15;
-    font-size: 1.5rem;
-  }
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(247, 231, 161, 0.5);
-    border-color: #f7e7a1;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(247, 231, 161, 0.4);
-  }
+const LogoutButton = styled(HomeButton)`
+  left: auto;
+  right: 0.75rem;
 
   @media (max-width: 768px) {
-    top: 0.5rem;
     right: 0.5rem;
-    padding: 0.3rem;
-
-    & svg {
-      font-size: 1rem;
-    }
   }
 `;
 
 const ChatWrapper = styled.div`
-  max-width: 100%;
+  max-width: 800px;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  height: 90vh;
-  background: linear-gradient(135deg, rgba(26, 14, 42, 0.22), rgba(60, 26, 90, 0.24));
-  border-radius: 12px;
-  border: 2px solid rgba(247, 231, 161, 0.2);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  height: 70vh;
+  background:rgba(32, 14, 48, 0);
+  border: 2px solid #fad028;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   overflow: hidden;
   z-index: 2;
+  animation: ${pulse} 2s infinite ease-in-out;
 
   @media (max-width: 768px) {
-    height: 95vh;
-    border-radius: 8px;
+    height: 80vh;
+    width: 95%;
+    border-radius: 6px;
   }
 `;
 
 const WelcomeMessage = styled.div`
-  font-family: 'Russo One', sans-serif;
-  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
-  color: #facc15;
-  text-shadow: 0 0 6px rgba(247, 231, 161, 0.4);
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid #facc15;
+  font-family: 'Pricedown', 'Russo One', 'Impact', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: #fad028;
+  text-shadow: 0 0 8px rgba(250, 208, 40, 0.6);
+  padding: 0.5rem;
+  background: rgba(32, 14, 48, 0.9);
+  border-bottom: 1px solid #fad028;
   text-align: center;
 
   @media (max-width: 768px) {
-    font-size: clamp(0.9rem, 1.4vw, 1rem);
-    padding: 0.5rem;
-    text-shadow: 0 0 4px rgba(247, 231, 161, 0.3);
+    font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+    padding: 0.3rem;
+    text-shadow: 0 0 5px rgba(250, 208, 40, 0.5);
   }
 `;
 
 const MessageContainer = styled.div`
   flex: 1;
-  padding: 1.5rem;
+  padding: 1rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #facc15;
-    border-radius: 3px;
+    background: #fad028;
+    border-radius: 2px;
   }
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: #200e30;
   }
 
   @media (max-width: 768px) {
-    padding: 0.75rem;
-    gap: 0.5rem;
+    padding: 0.5rem;
+    gap: 0.3rem;
     &::-webkit-scrollbar {
-      width: 4px;
+      width: 3px;
     }
   }
 `;
@@ -176,165 +165,167 @@ const MessageContainer = styled.div`
 const Message = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.5rem;
 
   @media (max-width: 768px) {
-    gap: 0.5rem;
+    gap: 0.3rem;
   }
 `;
 
 const Avatar = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1px solid #facc15;
+  border: 1px solid #fad028;
   object-fit: cover;
 
   @media (max-width: 768px) {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 `;
 
 const MessageContent = styled.div`
   flex: 1;
-  background: rgba(0, 0, 0, 0.27);
-  padding: 0.75rem;
-  border-radius: 8px;
-  border: 1px solid rgba(247, 231, 161, 0.2);
-  transition: all 0.3s ease;
+  background: rgba(32, 14, 48, 0.9);
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(250, 208, 40, 0.3);
+  transition: all 0.2s ease;
 
   &:hover {
-    border-color: #facc15;
-    box-shadow: 0 0 10px rgba(247, 231, 161, 0.4);
+    border-color: #fad028;
+    box-shadow: 0 0 8px rgba(250, 208, 40, 0.5);
   }
 
   @media (max-width: 768px) {
-    padding: 0.5rem;
-    border-radius: 6px;
+    padding: 0.3rem;
+    border-radius: 4px;
     &:hover {
-      box-shadow: 0 0 5px rgba(247, 231, 161, 0.3);
+      box-shadow: 0 0 5px rgba(250, 208, 40, 0.4);
     }
   }
 `;
 
 const Username = styled.div`
-  font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.9rem, 1.2vw, 1rem);
-  color: #f7e7a1;
+  font-family: 'Pricedown', 'Russo One', 'Impact', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  color: #fad028;
   font-weight: 400;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 
   @media (max-width: 768px) {
-    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
   }
 `;
 
 const MessageText = styled.p`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  color: #d1d5db;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  color: #e0e0e0;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.4;
 
   @media (max-width: 768px) {
-    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
-    line-height: 1.4;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    line-height: 1.3;
   }
 `;
 
 const Timestamp = styled.span`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.75rem, 1vw, 0.85rem);
-  color: #8b8b8b;
-  margin-left: 0.5rem;
+  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+  color: #a0a0a0;
+  margin-left: 0.4rem;
 
   @media (max-width: 768px) {
-    font-size: clamp(0.65rem, 0.85vw, 0.75rem);
-    margin-left: 0.3rem;
+    font-size: clamp(0.6rem, 0.8vw, 0.7rem);
+    margin-left: 0.2rem;
   }
 `;
 
 const TypingIndicator = styled.div`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  color: #8b8b8b;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  color: #fad028;
   font-style: italic;
-  padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.27);
-  border-radius: 8px;
-  border: 1px solid rgba(247, 231, 161, 0.1);
+  padding: 0.5rem;
+  background: rgba(32, 14, 48, 0.9);
+  border-radius: 6px;
+  border: 1px solid rgba(250, 208, 40, 0.3);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+
+  &:after {
+    content: '.';
+    animation: ${typingDots} 1.5s infinite steps(1);
+  }
 
   @media (max-width: 768px) {
-    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
-    padding: 0.5rem;
-    gap: 0.5rem;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    padding: 0.3rem;
+    gap: 0.3rem;
   }
 `;
 
 const InputContainer = styled.form`
   display: flex;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.7);
-  border-top: 1px solid #facc15;
+  padding: 0.5rem;
+  background: #200e30;
+  border-top: 1px solid #fad028;
   position: sticky;
   bottom: 0;
 
   @media (max-width: 768px) {
-    padding: 0.5rem;
+    padding: 0.3rem;
   }
 `;
 
 const Input = styled.input`
   flex: 1;
-  padding: 0.75rem;
+  padding: 0.5rem;
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  color: #d1d5db;
-  background: rgba(26, 14, 42, 0.9);
-  border: 1px solid #facc15;
-  border-radius: 6px;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  color: #e0e0e0;
+  background: rgba(32, 14, 48, 0.9);
+  border: 1px solid #fad028;
+  border-radius: 4px;
   outline: none;
 
   &:focus {
-    border-color: #f7e7a1;
-    box-shadow: 0 0 8px rgba(247, 231, 161, 0.4);
+    border-color: #fad028;
+    box-shadow: 0 0 6px rgba(250, 208, 40, 0.5);
   }
 
   @media (max-width: 768px) {
-    padding: 0.4rem;
-    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+    padding: 0.3rem;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
   }
 `;
 
 const SendButton = styled.button`
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  color: #1f1f1f;
-  background: linear-gradient(45deg, #f7e7a1, #facc15);
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  color: #200e30;
+  background: #fad028;
   border: none;
-  border-radius: 6px;
-  margin-left: 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.3rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(247, 231, 161, 0.5);
+    box-shadow: 0 0 8px rgba(250, 208, 40, 0.6);
   }
 
   @media (max-width: 768px) {
-    padding: 0.4rem 0.8rem;
-    width: 80px;
-    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
-    margin-left: 0.3rem;
-    &:hover {
-      box-shadow: 0 0 5px rgba(247, 231, 161, 0.3);
-    }
+    padding: 0.3rem 0.6rem;
+    width: 60px;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    margin-left: 0.2rem;
   }
 `;
 
@@ -346,9 +337,9 @@ const Chat = () => {
   const welcomeRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { background, city } = location.state || {};
+  const { background, city, username } = location.state || {};
 
-  const currentUser = localStorage.getItem('currentUser') || 'Guest';
+  const currentUser = username || 'Guest';
   const randomResponses = [
     'Yo, that’s wild! Wanna squad up later? 😎',
     'Nice one! Have you checked the black market yet?',
@@ -386,13 +377,13 @@ const Chat = () => {
     // GSAP animations
     gsap.fromTo(
       messageContainerRef.current,
-      { opacity: 0, x: 50 },
-      { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }
+      { opacity: 0, scale: 0.95 },
+      { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }
     );
     gsap.fromTo(
       welcomeRef.current,
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 }
+      { opacity: 0, y: -15 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.2 }
     );
   }, [city, background, navigate]);
 
@@ -448,8 +439,6 @@ const Chat = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('currentUser');
     navigate('/');
   };
 
@@ -458,9 +447,7 @@ const Chat = () => {
       <HomeButton onClick={() => navigate('/')} aria-label="Go to home">
         <Home />
       </HomeButton>
-      <LogoutButton onClick={handleLogout} aria-label="Logout">
-        <ExitToApp />
-      </LogoutButton>
+  
       <ChatWrapper>
         {city && (
           <WelcomeMessage ref={welcomeRef}>
@@ -485,7 +472,7 @@ const Chat = () => {
                 src="https://i.pinimg.com/736x/fd/92/27/fd922726ad4fe78103179165c169d08e.jpg"
                 alt="MidnightBot's avatar"
               />
-              <TypingIndicator>MidnightBot is typing...</TypingIndicator>
+              <TypingIndicator>MidnightBot is typing</TypingIndicator>
             </Message>
           )}
         </MessageContainer>

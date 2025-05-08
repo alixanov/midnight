@@ -9,7 +9,7 @@ import BlaineCountyImg from "../../assets/mountain.png";
 import ViceCityImg from "../../assets/beach.png";
 import LosSantosImg from "../../assets/los-angeles.png";
 import LosSantosBg from '../../assets/bg.png';
-import LibertyCity from "../../assets/backiee-248853-landscape.jpg";
+import LibertyCity from "../../assets/backiee-301324-landscape.jpg";
 import MapCarLosSantosBg from '../../assets/Animation - 1746629343650 (1).json';
 import MapCarLiberCity from "../../assets/map.json";
 
@@ -80,6 +80,7 @@ const CardGrid = styled.div`
   gap: 2rem;
   width: 100%;
   z-index: 2;
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -94,7 +95,7 @@ const Card = styled.div`
   align-items: center;
   text-align: center;
   border: 2px solid rgba(247, 231, 161, 0.2);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 15px ${props => props.shadowColor || 'rgba(0, 0, 0, 0.5)'};
   backdrop-filter: blur(8px);
   transition: all 0.3s ease;
   position: relative;
@@ -107,8 +108,8 @@ const Card = styled.div`
     !props.locked &&
     `
       transform: scale(1.03) rotate(1deg);
-      border-color: #facc15;
-      box-shadow: 0 8px 25px rgba(247, 231, 161, 0.5), 0 0 15px rgba(124, 58, 237, 0.4);
+      border-color: ${props.borderHoverColor || '#facc15'};
+      box-shadow: 0 8px 25px ${props => props.shadowColor || 'rgba(247, 231, 161, 0.5)'}, 0 0 15px ${props => props.shadowColor ? props.shadowColor + '66' : 'rgba(124, 58, 237, 0.4)'};
     `}
   }
 
@@ -142,8 +143,8 @@ const CardTxt = styled.div`
 `;
 
 const CardImage = styled.img`
-  width: 100%;
-  height: 220px;
+  width: 250px;
+  height: 250px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 1.2rem;
@@ -158,8 +159,8 @@ const CardTitle = styled.h3`
   font-family: 'Russo One', sans-serif;
   font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   font-weight: 400;
-  color: #f7e7a1;
-  text-shadow: 0 0 6px rgba(247, 231, 161, 0.4);
+  color: ${props => props.color || '#f7e7a1'};
+  text-shadow: ${props => `0 0 6px ${props.color ? props.color + '80' : 'rgba(247, 231, 161, 0.4)'}`};
   margin: 0 0 0.8rem;
   letter-spacing: 0.03em;
   line-height: 1.4;
@@ -279,6 +280,7 @@ const ChatBanner = ({ chatRef }) => {
       locked: false,
       background: LosSantosBg,
       animation: MapCarLosSantosBg,
+      color: '#facc15', // Yellow for vibrant urban feel
     },
     {
       name: 'Liberty City',
@@ -288,67 +290,79 @@ const ChatBanner = ({ chatRef }) => {
       locked: false,
       background: LibertyCity,
       animation: MapCarLiberCity,
+      color: '#00f7ff', // Cyan for gritty, futuristic vibe
     },
     {
       name: 'Vice City',
       image: ViceCityImg,
       description: 'Dive into the neon-lit nightlife of Vice City. This server is your gateway to glamour and intrigue.',
       locked: true,
+      color: '#ff4da6', // Pink for neon nightlife
     },
     {
       name: 'Blaine County',
       image: BlaineCountyImg,
       description: 'Escape to the wild, untamed landscapes of Blaine County. A server for those who thrive on adventure.',
       locked: true,
+      color: '#00ff66', // Green for natural landscapes
     },
   ];
 
+  const generateUsername = () => {
+    const randomID = Math.floor(1000 + Math.random() * 9000); // 4-digit ID
+    return `Player${randomID}`;
+  };
+
   const handleCardClick = (locked, background, animation, city) => {
     if (!locked) {
-      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-      if (isAuthenticated) {
-        navigate('/chat-room', { state: { background, animation, city } });
-      } else {
-        navigate('/auth', { state: { background, animation, city } });
-      }
+      const username = generateUsername();
+      navigate('/chat-room', { state: { background, animation, city, username } });
     }
   };
 
   return (
     <ChatBannerContainer ref={chatRef}>
       <TitleContainer ref={titleRef}>
-        <PlatformName>Midnight</PlatformName>
+        <PlatformName>GTA VI INTRO</PlatformName>
         <Title>Online Chat Servers</Title>
       </TitleContainer>
       <CardGrid ref={gridRef}>
-        {servers.map((server, index) => (
-          <Card
-            key={index}
-            className="card"
-            locked={server.locked}
-            onClick={() => handleCardClick(server.locked, server.background, server.animation, server.city)}
-          >
-            <CardImage src={server.image} alt={`${server.name} server`} />
-            <CardTxt>
-              <CardTitle>{server.name}</CardTitle>
-              <CardDescription>{server.description}</CardDescription>
-              <JoinButton
-                locked={server.locked}
-                onClick={() => handleCardClick(server.locked, server.background, server.animation, server.city)}
-                disabled={server.locked}
-              >
-                {server.locked ? (
-                  <>
-                    <LockIcon />
-                    Locked
-                  </>
-                ) : (
-                  'Join Server'
-                )}
-              </JoinButton>
-            </CardTxt>
-          </Card>
-        ))}
+        {servers.map((server, index) => {
+          // Convert hex color to rgba with 0.5 opacity for default shadow
+          const rgb = server.color.match(/[A-Za-z0-9]{2}/g).map(hex => parseInt(hex, 16));
+          const shadowColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5)`;
+
+          return (
+            <Card
+              key={index}
+              className="card"
+              locked={server.locked}
+              shadowColor={shadowColor}
+              borderHoverColor={server.color}
+              onClick={() => handleCardClick(server.locked, server.background, server.animation, server.city)}
+            >
+              <CardImage src={server.image} alt={`${server.name} server`} />
+              <CardTxt>
+                <CardTitle color={server.color}>{server.name}</CardTitle>
+                <CardDescription>{server.description}</CardDescription>
+                <JoinButton
+                  locked={server.locked}
+                  onClick={() => handleCardClick(server.locked, server.background, server.animation, server.city)}
+                  disabled={server.locked}
+                >
+                  {server.locked ? (
+                    <>
+                      <LockIcon />
+                      Locked
+                    </>
+                  ) : (
+                    'Join Server'
+                  )}
+                </JoinButton>
+              </CardTxt>
+            </Card>
+          );
+        })}
       </CardGrid>
     </ChatBannerContainer>
   );
