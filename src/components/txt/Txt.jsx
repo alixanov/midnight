@@ -8,7 +8,7 @@ import txtBg from "../../assets/backiee-314918-landscape.jpg";
 const TxtContainer = styled.section`
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(rgba(35, 12, 51, 0.8), rgba(17, 17, 28, 0.8)), url(${txtBg}) no-repeat center/cover;
+  background: linear-gradient(rgba(35, 12, 51, 0.59), rgba(17, 17, 28, 0.64)), url(${txtBg}) no-repeat center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;

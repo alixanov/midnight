@@ -12,7 +12,7 @@ const MainContainer = styled.div`
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.29), rgba(50, 20, 70, 0.23)), url(${bgBanner});
+  background: linear-gradient(135deg, rgba(15, 10, 30, 0.2), rgba(50, 20, 70, 0.13)), url(${bgBanner});
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -21,7 +21,7 @@ const MainContainer = styled.div`
 const ChatFooterContainer = styled.div`
   position: relative;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.75), rgba(50, 20, 70, 0.8)), url(${ChatBannerImg});
+  background: linear-gradient(135deg, rgba(15, 10, 30, 0.4), rgba(50, 20, 70, 0.47)), url(${ChatBannerImg});
   background-size: cover;
   background-position: center;
   overflow: hidden;
