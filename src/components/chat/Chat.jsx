@@ -26,7 +26,7 @@ const ChatContainer = styled.section`
     display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(32, 14, 48, 0.53), rgba(48, 21, 72, 0.61)), url(${props => props.chatBg});
+  background: linear-gradient(135deg, rgba(32, 14, 48, 0.37), rgba(48, 21, 72, 0.41)), url(${props => props.chatBg});
   background-size: cover;
   background-position: center;
   padding: 1.5rem;
