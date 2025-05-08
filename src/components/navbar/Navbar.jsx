@@ -279,15 +279,12 @@ const Navbar = ({ bannerRef, chatRef, chatBannerRef }) => {
         <NavLinks isOpen={isOpen} ref={navLinksRef}>
           <NavButton type="button" onClick={() => handleScroll(bannerRef)}>
             <Home sx={{ fontSize: 24 }} />
-            <span className="text">Banner</span>
+            <span className="text">Home</span>
           </NavButton>
-          <NavButton type="button" onClick={() => handleScroll(chatRef)}>
-            <Chat sx={{ fontSize: 24 }} />
-            <span className="text">Chat</span>
-          </NavButton>
+     
           <NavButton type="button" onClick={() => handleScroll(chatBannerRef)}>
             <Explore sx={{ fontSize: 24 }} />
-            <span className="text">Server</span>
+            <span className="text">Capture</span>
           </NavButton>
           <FollowButton href="https://x.com/" target="_blank" rel="noopener noreferrer">
             <X sx={{ fontSize: 24 }} />

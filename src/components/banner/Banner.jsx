@@ -4,7 +4,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import bgBanner from "../../assets/backiee-314918-landscape.jpg";
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const BannerContainer = styled.div`
@@ -24,6 +23,7 @@ const BannerContainer = styled.div`
   overflow: hidden;
   box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.7); /* Vignette effect */
   transform: translate3d(0, 0, 0); /* Enable hardware acceleration */
+  opacity: 1; /* Ensure initial visibility */
 
   @media (max-width: 639px) {
     padding: 0 1rem;
@@ -32,7 +32,7 @@ const BannerContainer = styled.div`
 
 const Title = styled.h1`
   font-family: 'Tilt Prism', sans-serif;
-  font-size: clamp(5.2rem, 6.5vw, 3.8rem);
+  font-size: clamp(2.2rem, 6.5vw, 3.8rem);
   font-weight: 400;
   color: #f7e7a1;
   text-shadow: 0 0 15px rgba(247, 231, 161, 0.6), 0 0 25px rgba(124, 58, 237, 0.4);
@@ -99,7 +99,7 @@ const ParticleCanvas = styled.canvas`
   z-index: 1;
 `;
 
-const Banner = ({ chatRef }) => {
+const Banner = ({ chatRef, chatBannerRef }) => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const buttonRef = useRef(null);
@@ -108,13 +108,12 @@ const Banner = ({ chatRef }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Initialize GSAP animations
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.5, ease: 'power2.in' }
-    );
+    // Preload background image
+    const img = new Image();
+    img.src = bgBanner;
 
+    // Initialize GSAP animations
+    // Removed container opacity animation to prevent white flash
     gsap.fromTo(
       titleRef.current,
       { y: 50, opacity: 0 },
@@ -240,8 +239,8 @@ const Banner = ({ chatRef }) => {
   }, []);
 
   const handleScroll = () => {
-    if (chatRef && chatRef.current) {
-      chatRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (chatBannerRef && chatBannerRef.current) {
+      chatBannerRef.current.scrollIntoView({ behavior: 'smooth' });
       setIsOpen(false);
     }
   };

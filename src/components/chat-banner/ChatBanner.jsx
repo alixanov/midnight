@@ -1,11 +1,17 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
+import { Lock } from '@mui/icons-material';
 import ChatBannerImg from "../../assets/backiee-274909-landscape.jpg";
 import LibertyCityImg from "../../assets/statue-of-liberty.png";
 import BlaineCountyImg from "../../assets/mountain.png";
 import ViceCityImg from "../../assets/beach.png";
 import LosSantosImg from "../../assets/los-angeles.png";
+import LosSantosBg from '../../assets/bg.png';
+import LibertyCity from "../../assets/backiee-248853-landscape.jpg";
+import MapCarLosSantosBg from '../../assets/Animation - 1746629343650 (1).json';
+import MapCarLiberCity from "../../assets/map.json";
 
 const ChatBannerContainer = styled.section`
   min-height: 100vh;
@@ -93,11 +99,17 @@ const Card = styled.div`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: ${props => (props.locked ? 'default' : 'pointer')};
+  opacity: ${props => (props.locked ? 0.6 : 1)};
 
   &:hover {
-    transform: scale(1.03) rotate(1deg);
-    border-color: #facc15;
-    box-shadow: 0 8px 25px rgba(247, 231, 161, 0.5), 0 0 15px rgba(124, 58, 237, 0.4);
+    ${props =>
+    !props.locked &&
+    `
+      transform: scale(1.03) rotate(1deg);
+      border-color: #facc15;
+      box-shadow: 0 8px 25px rgba(247, 231, 161, 0.5), 0 0 15px rgba(124, 58, 237, 0.4);
+    `}
   }
 
   &::before {
@@ -113,18 +125,20 @@ const Card = styled.div`
   }
 
   &:hover::before {
-    opacity: 1;
+    ${props => !props.locked && `opacity: 1;`}
   }
 
   @media (max-width: 768px) {
     padding: 1.5rem;
   }
 `;
-const CardTxt = styled.h3`
+
+const CardTxt = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100%;
 `;
 
 const CardImage = styled.img`
@@ -155,15 +169,12 @@ const CardTitle = styled.h3`
   }
 `;
 
-
-
-
 const CardDescription = styled.p`
   font-family: 'Russo One', sans-serif;
   font-size: clamp(0.85rem, 1.3vw, 0.95rem);
   color: #d1d5db;
   line-height: 1.5;
-  margin: 0;
+  margin: 0 0 1rem;
   letter-spacing: 0.02em;
 
   @media (max-width: 768px) {
@@ -171,19 +182,62 @@ const CardDescription = styled.p`
   }
 `;
 
+const JoinButton = styled.button`
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(0.85rem, 0.9vw, 0.95rem);
+  font-weight: 400;
+  padding: 0.6rem 1.2rem;
+  color: #1f1f1f;
+  background: ${props =>
+    props.locked
+      ? 'linear-gradient(45deg, #666, #888)'
+      : 'linear-gradient(45deg, #f7e7a1, #facc15)'};
+  border: none;
+  border-radius: 6px;
+  cursor: ${props => (props.locked ? 'default' : 'pointer')};
+  box-shadow: ${props =>
+    props.locked
+      ? '0 2px 6px rgba(0, 0, 0, 0.3)'
+      : '0 3px 8px rgba(247, 231, 161, 0.2)'};
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: ${props => (props.locked ? 0.7 : 1)};
+
+  &:hover {
+    ${props =>
+    !props.locked &&
+    `
+      transform: translateY(-1px);
+      box-shadow: 0 0 12px rgba(247, 231, 161, 0.5);
+    `}
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: clamp(0.8rem, 0.85vw, 0.9rem);
+    min-height: 40px;
+  }
+`;
+
+const LockIcon = styled(Lock)`
+  font-size: 16px !important;
+  color: #d1d5db;
+`;
+
 const ChatBanner = ({ chatRef }) => {
   const titleRef = useRef(null);
   const gridRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Animate title container
     gsap.fromTo(
       titleRef.current,
       { opacity: 0, y: 40 },
       { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out' }
     );
 
-    // Animate cards with IntersectionObserver
     const cards = gridRef.current?.querySelectorAll('.card');
     if (cards) {
       const observer = new IntersectionObserver(
@@ -219,25 +273,46 @@ const ChatBanner = ({ chatRef }) => {
   const servers = [
     {
       name: 'Los Santos',
+      city: 'Los Santos',
       image: LosSantosImg,
       description: 'A bustling urban jungle where ambition and danger collide. Dive into the chaos of Midnight’s most vibrant chat server.',
+      locked: false,
+      background: LosSantosBg,
+      animation: MapCarLosSantosBg,
     },
     {
       name: 'Liberty City',
+      city: 'Liberty City',
       image: LibertyCityImg,
       description: 'Navigate the gritty streets of a city that never sleeps. Connect with rebels and dreamers in this iconic server.',
+      locked: false,
+      background: LibertyCity,
+      animation: MapCarLiberCity,
     },
     {
       name: 'Vice City',
       image: ViceCityImg,
       description: 'Dive into the neon-lit nightlife of Vice City. This server is your gateway to glamour and intrigue.',
+      locked: true,
     },
     {
       name: 'Blaine County',
       image: BlaineCountyImg,
       description: 'Escape to the wild, untamed landscapes of Blaine County. A server for those who thrive on adventure.',
+      locked: true,
     },
   ];
+
+  const handleCardClick = (locked, background, animation, city) => {
+    if (!locked) {
+      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+      if (isAuthenticated) {
+        navigate('/chat-room', { state: { background, animation, city } });
+      } else {
+        navigate('/auth', { state: { background, animation, city } });
+      }
+    }
+  };
 
   return (
     <ChatBannerContainer ref={chatRef}>
@@ -247,12 +322,31 @@ const ChatBanner = ({ chatRef }) => {
       </TitleContainer>
       <CardGrid ref={gridRef}>
         {servers.map((server, index) => (
-          <Card key={index} className="card">
+          <Card
+            key={index}
+            className="card"
+            locked={server.locked}
+            onClick={() => handleCardClick(server.locked, server.background, server.animation, server.city)}
+          >
             <CardImage src={server.image} alt={`${server.name} server`} />
-           <CardTxt>
+            <CardTxt>
               <CardTitle>{server.name}</CardTitle>
               <CardDescription>{server.description}</CardDescription>
-           </CardTxt>
+              <JoinButton
+                locked={server.locked}
+                onClick={() => handleCardClick(server.locked, server.background, server.animation, server.city)}
+                disabled={server.locked}
+              >
+                {server.locked ? (
+                  <>
+                    <LockIcon />
+                    Locked
+                  </>
+                ) : (
+                  'Join Server'
+                )}
+              </JoinButton>
+            </CardTxt>
           </Card>
         ))}
       </CardGrid>
