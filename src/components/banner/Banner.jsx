@@ -39,6 +39,8 @@ const LeftSection = styled.div`
 
   @media (max-width: 768px) {
     max-width: 100%;
+        margin: 0 0 0 0;
+
     align-items: center;
   }
 `;
@@ -55,6 +57,7 @@ const RightSection = styled.div`
   @media (max-width: 768px) {
     max-width: 100%;
     align-items: center;
+
   }
 `;
 
@@ -68,7 +71,8 @@ const LogoImage = styled.img`
   }
 
   @media (max-width: 639px) {
-    width: 150px;
+    width: 180px;
+
   }
 `;
 
@@ -94,6 +98,8 @@ const WatchTrailerButton = styled.button`
   }
 
   @media (max-width: 639px) {
+          margin: 0 0 0 0;
+
     padding: 0.6rem 1.5rem;
     font-size: clamp(0.9rem, 1.2vw, 1rem);
   }
