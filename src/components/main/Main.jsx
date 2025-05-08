@@ -98,7 +98,7 @@ const Main = () => {
       }
 
       draw() {
-        mainCtx.fillStyle = `rgba(247, 231, 161, ${this.opacity})`;
+        mainCtx.fillStyle = `rgb(255, 0, 217, ${this.opacity})`;
         mainCtx.beginPath();
         mainCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         mainCtx.fill();
@@ -156,7 +156,7 @@ const Main = () => {
       }
 
       draw() {
-        chatFooterCtx.fillStyle = `rgba(255, 77, 166, ${this.opacity})`;
+        chatFooterCtx.fillStyle = `rgb(255, 0, 217, ${this.opacity})`;
         chatFooterCtx.beginPath();
         chatFooterCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         chatFooterCtx.fill();
