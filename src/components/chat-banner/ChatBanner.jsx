@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { Lock } from '@mui/icons-material';
-import ChatBannerImg from "../../assets/backiee-274909-landscape.jpg";
 import LibertyCityImg from "../../assets/statue-of-liberty.png";
 import BlaineCountyImg from "../../assets/mountain.png";
 import ViceCityImg from "../../assets/beach.png";
@@ -12,21 +11,20 @@ import LosSantosBg from '../../assets/bg.png';
 import LibertyCity from "../../assets/backiee-301324-landscape.jpg";
 import MapCarLosSantosBg from '../../assets/Animation - 1746629343650 (1).json';
 import MapCarLiberCity from "../../assets/map.json";
+import grandThertAuto from "../../assets/gta-logo-1.png";
+import vigta6 from "../../assets/gta-6.png";
 
 const ChatBannerContainer = styled.section`
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.75), rgba(50, 20, 70, 0.8)), url(${ChatBannerImg});
-  background-size: cover;
-  background-position: center;
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: 4rem 13rem;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.6);
   transform: translate3d(0, 0, 0);
 
   @media (max-width: 768px) {
@@ -37,25 +35,26 @@ const ChatBannerContainer = styled.section`
 
 const TitleContainer = styled.div`
   text-align: center;
-  margin-bottom: 3rem;
   z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 
   @media (max-width: 768px) {
     margin-bottom: 2rem;
+    gap: 0.5rem;
   }
 `;
 
-const PlatformName = styled.h1`
-  font-family: 'Tilt Prism', sans-serif;
-  font-size: clamp(2.2rem, 6.5vw, 3.8rem);
-  font-weight: 400;
-  color: #f7e7a1;
-  text-shadow: 0 0 15px rgba(247, 231, 161, 0.6), 0 0 25px rgba(124, 58, 237, 0.4);
-  margin: 0 0 0.5rem;
-  letter-spacing: 0.05em;
+const LogoImage = styled.img`
+  width: 250px;
+  height: auto;
+  object-fit: contain;
 
   @media (max-width: 768px) {
-    font-size: clamp(1.6rem, 4.5vw, 2.3rem);
+    width: 100px;
   }
 `;
 
@@ -68,7 +67,6 @@ const Title = styled.h2`
   text-shadow: 0 0 12px rgba(247, 231, 161, 0.5), 0 0 20px rgba(124, 58, 237, 0.3);
   margin: 0;
   letter-spacing: 0.05em;
-
   @media (max-width: 768px) {
     font-size: clamp(1.2rem, 3vw, 1.8rem);
   }
@@ -76,8 +74,9 @@ const Title = styled.h2`
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
+  margin: 3rem 0 0 0;
   width: 100%;
   z-index: 2;
 
@@ -88,12 +87,13 @@ const CardGrid = styled.div`
 `;
 
 const Card = styled.div`
-  background: linear-gradient(135deg, rgba(26, 14, 42, 0.1), rgba(60, 26, 90, 0.31));
+  height: 100px;
+  background: #38153b;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 0.9rem;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
   border: 2px solid rgba(247, 231, 161, 0.2);
   box-shadow: 0 4px 15px ${props => props.shadowColor || 'rgba(0, 0, 0, 0.5)'};
   backdrop-filter: blur(8px);
@@ -107,10 +107,10 @@ const Card = styled.div`
     ${props =>
     !props.locked &&
     `
-      transform: scale(1.03) rotate(1deg);
-      border-color: ${props.borderHoverColor || '#facc15'};
-      box-shadow: 0 8px 25px ${props => props.shadowColor || 'rgba(247, 231, 161, 0.5)'}, 0 0 15px ${props => props.shadowColor ? props.shadowColor + '66' : 'rgba(124, 58, 237, 0.4)'};
-    `}
+        transform: scale(1.03) rotate(1deg);
+        border-color: ${props.borderHoverColor || '#facc15'};
+        box-shadow: 0 8px 25px ${props => props.shadowColor || 'rgba(247, 231, 161, 0.5)'}, 0 0 15px ${props => props.shadowColor ? props.shadowColor + '66' : 'rgba(124, 58, 237, 0.4)'};
+      `}
   }
 
   &::before {
@@ -130,71 +130,78 @@ const Card = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 1.5rem;
+    padding: 0.5rem;
   }
 `;
 
 const CardTxt = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  padding-left: 1rem;
 `;
 
 const CardImage = styled.img`
-  width: 250px;
-  height: 250px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1.2rem;
+  border-radius: 4px;
   border: 1px solid rgba(247, 231, 161, 0.3);
 
   @media (max-width: 768px) {
-    height: 160px;
+    width: 60px;
+    height: 60px;
   }
 `;
 
 const CardTitle = styled.h3`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
-  font-weight: 400;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  font-weight: 700;
   color: ${props => props.color || '#f7e7a1'};
   text-shadow: ${props => `0 0 6px ${props.color ? props.color + '80' : 'rgba(247, 231, 161, 0.4)'}`};
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.2rem;
   letter-spacing: 0.03em;
-  line-height: 1.4;
+  line-height: 1.2;
 
   @media (max-width: 768px) {
-    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    font-size: clamp(0.9rem, 1.3vw, 1rem);
   }
 `;
 
 const CardDescription = styled.p`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+  font-weight: 700;
   color: #d1d5db;
-  line-height: 1.5;
-  margin: 0 0 1rem;
+  line-height: 1.2;
+  margin: 0 0 0.3rem;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 
   @media (max-width: 768px) {
-    font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
   }
 `;
 
 const JoinButton = styled.button`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.85rem, 0.9vw, 0.95rem);
-  font-weight: 400;
-  padding: 0.6rem 1.2rem;
+  font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
   color: #1f1f1f;
   background: ${props =>
     props.locked
       ? 'linear-gradient(45deg, #666, #888)'
       : 'linear-gradient(45deg, #f7e7a1, #facc15)'};
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: ${props => (props.locked ? 'default' : 'pointer')};
   box-shadow: ${props =>
     props.locked
@@ -203,27 +210,26 @@ const JoinButton = styled.button`
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.2rem;
   opacity: ${props => (props.locked ? 0.7 : 1)};
 
   &:hover {
     ${props =>
     !props.locked &&
     `
-      transform: translateY(-1px);
-      box-shadow: 0 0 12px rgba(247, 231, 161, 0.5);
-    `}
+        transform: translateY(-1px);
+        box-shadow: 0 0 12px rgba(247, 231, 161, 0.5);
+      `}
   }
 
   @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
-    font-size: clamp(0.8rem, 0.85vw, 0.9rem);
-    min-height: 40px;
+    padding: 0.3rem 0.7rem;
+    font-size: clamp(0.75rem, 0.85vw, 0.85rem);
   }
 `;
 
 const LockIcon = styled(Lock)`
-  font-size: 16px !important;
+  font-size: 12px !important;
   color: #d1d5db;
 `;
 
@@ -276,40 +282,40 @@ const ChatBanner = ({ chatRef }) => {
       name: 'Los Santos',
       city: 'Los Santos',
       image: LosSantosImg,
-      description: 'A bustling urban jungle where ambition and danger collide. Dive into the chaos of Midnight’s most vibrant chat server.',
+      description: 'Chat room',
       locked: false,
       background: LosSantosBg,
       animation: MapCarLosSantosBg,
-      color: '#facc15', // Yellow for vibrant urban feel
+      color: '#facc15',
     },
     {
       name: 'Liberty City',
       city: 'Liberty City',
       image: LibertyCityImg,
-      description: 'Navigate the gritty streets of a city that never sleeps. Connect with rebels and dreamers in this iconic server.',
+      description: 'Chat room',
       locked: false,
       background: LibertyCity,
       animation: MapCarLiberCity,
-      color: '#00f7ff', // Cyan for gritty, futuristic vibe
+      color: '#00f7ff',
     },
     {
       name: 'Vice City',
       image: ViceCityImg,
-      description: 'Dive into the neon-lit nightlife of Vice City. This server is your gateway to glamour and intrigue.',
+      description: 'Chat room',
       locked: true,
-      color: '#ff4da6', // Pink for neon nightlife
+      color: '#ff4da6',
     },
     {
       name: 'Blaine County',
       image: BlaineCountyImg,
-      description: 'Escape to the wild, untamed landscapes of Blaine County. A server for those who thrive on adventure.',
+      description: 'Chat room',
       locked: true,
-      color: '#00ff66', // Green for natural landscapes
+      color: '#00ff66',
     },
   ];
 
   const generateUsername = () => {
-    const randomID = Math.floor(1000 + Math.random() * 9000); // 4-digit ID
+    const randomID = Math.floor(1000 + Math.random() * 9000);
     return `Player${randomID}`;
   };
 
@@ -323,12 +329,12 @@ const ChatBanner = ({ chatRef }) => {
   return (
     <ChatBannerContainer ref={chatRef}>
       <TitleContainer ref={titleRef}>
-        <PlatformName>GTA VI INTRO</PlatformName>
-        <Title>Online Chat Servers</Title>
+        <LogoImage src={grandThertAuto} alt="Grand Theft Auto Logo" />
+        <LogoImage src={vigta6} alt="GTA VI Logo" />
       </TitleContainer>
+      <Title>Online Chat Servers</Title>
       <CardGrid ref={gridRef}>
         {servers.map((server, index) => {
-          // Convert hex color to rgba with 0.5 opacity for default shadow
           const rgb = server.color.match(/[A-Za-z0-9]{2}/g).map(hex => parseInt(hex, 16));
           const shadowColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5)`;
 
