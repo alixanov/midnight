@@ -180,6 +180,8 @@ const CardTitle = styled.h3`
   text-transform: uppercase;
 
   @media (max-width: 768px) {
+        text-align: center;
+
     font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   }
 `;
@@ -193,6 +195,7 @@ const CardDescription = styled.p`
 
   @media (max-width: 768px) {
     font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      text-align: center;
   }
 `;
 

@@ -74,6 +74,8 @@ const Title = styled.h2`
 
   @media (max-width: 768px) {
     font-weight: 600;
+      margin-top: -50px;
+
     font-size: clamp(1.8rem, 3vw, 1.8rem);
   }
 `;
@@ -89,6 +91,7 @@ const CardGrid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1rem;
+    justify-items: center;
   }
 `;
 
@@ -136,8 +139,24 @@ const Card = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 0.6rem;
-    min-height: 80px;
+    width: clamp(250px, 80vw, 260px);
+    aspect-ratio: 1/1;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 16px;
+    min-height: unset;
+    box-shadow: 0 6px 20px ${props => props.shadowColor || 'rgba(0, 0, 0, 0.6)'};
+
+    &:hover {
+      ${props =>
+    !props.locked &&
+    `
+          transform: translateY(-2px);
+          border-color: ${props.borderHoverColor || '#facc15'};
+          box-shadow: 0 10px 30px ${props.shadowColor || 'rgba(247, 231, 161, 0.6)'}, 0 0 20px ${props.shadowColor ? props.shadowColor + '80' : 'rgba(255, 77, 166, 0.5)'};
+        `}
+    }
   }
 `;
 
@@ -149,6 +168,12 @@ const CardTxt = styled.div`
   justify-content: center;
   text-align: left;
   padding-left: 1rem;
+
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+    padding-left: 0;
+  }
 `;
 
 const CardImage = styled.img`
@@ -159,8 +184,8 @@ const CardImage = styled.img`
   border: 1px solid rgba(247, 231, 161, 0.3);
 
   @media (max-width: 768px) {
-    width: clamp(50px, 12vw, 60px);
-    height: clamp(50px, 12vw, 60px);
+    width: clamp(80px, 20vw, 100px);
+    height: clamp(80px, 20vw, 100px);
   }
 `;
 
@@ -176,6 +201,7 @@ const CardTitle = styled.h3`
 
   @media (max-width: 768px) {
     font-size: clamp(0.9rem, 1.2vw, 1rem);
+    margin: 0.5rem 0 0.25rem;
   }
 `;
 
@@ -194,6 +220,7 @@ const CardDescription = styled.p`
 
   @media (max-width: 768px) {
     font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+    margin: 0 0 0.75rem;
   }
 `;
 
@@ -234,6 +261,7 @@ const JoinButton = styled.button`
     padding: 0.3rem 0.7rem;
     font-size: clamp(0.75rem, 0.85vw, 0.85rem);
     min-height: 44px;
+    margin-top: 0.5rem;
   }
 `;
 
@@ -256,7 +284,7 @@ const LogoImagegrandTheftAuto = styled.img`
 
 const Description = styled.div`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(1rem, 1vw, 0.9rem);
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
   color: #ffffff;
   line-height: 1.4;
   text-align: center;
@@ -419,7 +447,6 @@ const ChatBanner = ({ chatRef }) => {
         <p>Form alliances, strategize your next big score, and dominate the streets.</p>
         <p>Exclusive events and high-stakes challenges await—will you rise to the top?</p>
         <p>Gather your crew, sharpen your skills, and own the city like never before!</p>
-
       </Description>
     </ChatBannerContainer>
   );
