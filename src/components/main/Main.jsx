@@ -5,26 +5,45 @@ import Banner from "../banner/Banner";
 import ChatBanner from "../chat-banner/ChatBanner";
 import Footer from "../footer/Footer";
 import bgBanner from "../../assets/gta-bg.png";
-import ChatBannerImg from "../../assets/backiee-274909-landscape.jpg";
-import Txt from "../txt/Txt";
+import ChatBannerImg from "../../assets/gta-bg.png";
 
 const MainContainer = styled.div`
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.2), rgba(50, 20, 70, 0.13)), url(${bgBanner});
-  background-size: cover;
-  background-position: center;
   overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(27, 10, 41, 0.88), rgba(27, 10, 41, 0.49) 30%, rgba(27, 10, 41, 0.37) 70%, rgba(27, 10, 41, 0.86)), url(${bgBanner});
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+  }
 `;
 
 const ChatFooterContainer = styled.div`
   position: relative;
   width: 100%;
-  background: linear-gradient(135deg, rgba(15, 10, 30, 0.4), rgba(50, 20, 70, 0.47)), url(${ChatBannerImg});
-  background-size: cover;
-  background-position: center;
   overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(27, 10, 41, 0.97), rgba(27, 10, 41, 0.47) 30%, rgba(27, 10, 41, 0.49) 70%, rgb(27, 10, 41)), url(${ChatBannerImg});
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+  }
 `;
 
 const ParticleCanvas = styled.canvas`
@@ -51,7 +70,7 @@ const Main = () => {
     const imgChat = new Image();
     imgChat.src = ChatBannerImg;
 
-    // Particle effect for MainContainer (Navbar + Banner + Txt)
+    // Particle effect for MainContainer (Navbar + Banner)
     const mainCanvas = mainCanvasRef.current;
     const mainCtx = mainCanvas.getContext('2d');
     const resizeMainCanvas = () => {
@@ -86,7 +105,7 @@ const Main = () => {
           const distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < 120) {
             this.x -= dx / 60;
-            this.y -= dy / 60;
+            this.y -= dy / 80;
             this.opacity = Math.min(this.opacity + 0.1, 0.8);
           } else {
             this.opacity = Math.max(this.opacity - 0.05, 0.3);
@@ -243,7 +262,6 @@ const Main = () => {
         <div ref={bannerRef}>
           <Banner chatRef={chatRef} chatBannerRef={chatBannerRef} />
         </div>
-        <Txt chatBannerRef={chatBannerRef} />
       </MainContainer>
       <ChatFooterContainer>
         <ParticleCanvas ref={chatFooterCanvasRef} />

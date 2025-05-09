@@ -42,7 +42,7 @@ const TitleContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 5rem;
   margin-bottom: 1rem;
 
   @media (max-width: 768px) {
@@ -52,7 +52,7 @@ const TitleContainer = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: clamp(200px, 40vw, 250px);
+  width: clamp(300px, 40vw, 250px);
   height: auto;
   object-fit: contain;
 
@@ -63,16 +63,18 @@ const LogoImage = styled.img`
 
 const Title = styled.h2`
   font-family: 'Tilt Prism', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: 400;
+  font-size: clamp(3.8rem, 4vw, 2.6rem);
+  font-weight: 500;
   text-transform: uppercase;
   color: #facc15;
   text-shadow: 0 0 12px rgba(247, 231, 161, 0.5), 0 0 20px rgba(124, 58, 237, 0.3);
   margin: 0;
+  margin-top: -100px;
   letter-spacing: 0.05em;
 
   @media (max-width: 768px) {
-    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    font-weight: 600;
+    font-size: clamp(1.8rem, 3vw, 1.8rem);
   }
 `;
 
@@ -164,7 +166,7 @@ const CardImage = styled.img`
 
 const CardTitle = styled.h3`
   font-family: 'Russo One', sans-serif;
-  font-size: clamp(1rem, 1.4vw, 1.1rem);
+  font-size: clamp(2rem, 1.4vw, 1.1rem);
   font-weight: 700;
   color: ${props => props.color || '#f7e7a1'};
   text-shadow: ${props => `0 0 6px ${props.color ? props.color + '80' : 'rgba(247, 231, 161, 0.4)'}`};
@@ -238,6 +240,34 @@ const JoinButton = styled.button`
 const LockIcon = styled(Lock)`
   font-size: 12px !important;
   color: #d1d5db;
+`;
+
+const LogoImagegrandTheftAuto = styled.img`
+  width: clamp(400px, 50vw, 300px);
+  height: auto;
+  object-fit: contain;
+  margin-left: -60px;
+
+  @media (max-width: 768px) {
+    width: clamp(220px, 40vw, 200px);
+    margin-left: 0px;
+  }
+`;
+
+const Description = styled.div`
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(1rem, 1vw, 0.9rem);
+  color: #ffffff;
+  line-height: 1.4;
+  text-align: center;
+  margin-top: 2rem;
+  max-width: 800px;
+
+  @media (max-width: 768px) {
+    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+    margin-top: 1.5rem;
+    max-width: 100%;
+  }
 `;
 
 const ChatBanner = ({ chatRef }) => {
@@ -339,7 +369,7 @@ const ChatBanner = ({ chatRef }) => {
   return (
     <ChatBannerContainer ref={chatRef}>
       <TitleContainer ref={titleRef}>
-        <LogoImage src={grandTheftAuto} alt="Grand Theft Auto Logo" />
+        <LogoImagegrandTheftAuto src={grandTheftAuto} alt="Grand Theft Auto Logo" />
         <LogoImage src={gta6} alt="GTA VI Logo" />
       </TitleContainer>
       <Title>Online Chat Servers</Title>
@@ -382,6 +412,15 @@ const ChatBanner = ({ chatRef }) => {
           );
         })}
       </CardGrid>
+      <Description role="region" aria-label="Chat Room Description">
+        <p>Gear up for epic chats in our GTA servers!</p>
+        <p>Join Los Santos or Liberty City to connect with crews and plan heists.</p>
+        <p>Unlock Vice City and Blaine County soon—stay tuned!</p>
+        <p>Form alliances, strategize your next big score, and dominate the streets.</p>
+        <p>Exclusive events and high-stakes challenges await—will you rise to the top?</p>
+        <p>Gather your crew, sharpen your skills, and own the city like never before!</p>
+
+      </Description>
     </ChatBannerContainer>
   );
 };

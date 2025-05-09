@@ -19,26 +19,14 @@ const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: ${props => props.isScrolled
-    ? 'linear-gradient(135deg, #230c33, rgba(17, 17, 28, 0.9))'
-    : 'transparent'};
-  backdrop-filter: ${props => props.isScrolled ? 'blur(8px)' : 'none'};
-  box-shadow: ${props => props.isScrolled ? '0 4px 15px rgba(0, 0, 0, 0.5)' : 'none'};
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+  background: transparent;
 
   @media (max-width: 768px) {
-    padding: 0.75rem 1rem;
-    background: transparent;
-    backdrop-filter: none;
-    box-shadow: ${props => props.isScrolled ? '0 2px 6px rgba(250, 204, 21, 0.2)' : 'none'};
-    min-height: 48px;
+    padding: 0.5rem 0.75rem;
   }
 
   @media (max-width: 480px) {
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.5rem;
   }
 `;
 
@@ -72,19 +60,15 @@ const Logo = styled.div`
 const NavLinks = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: center;
   opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease;
 
   @media (max-width: 768px) {
-    gap: 0.5rem;
-    justify-content: flex-end;
-  }
-
-  @media (max-width: 480px) {
     gap: 0.4rem;
+    justify-content: flex-end;
   }
 `;
 
@@ -92,13 +76,12 @@ const NavButton = styled.button`
   font-family: 'Russo One', sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
   font-weight: 400;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   color: #ffffff;
-  background: transparent;
-  border: 1px solid rgba(247, 231, 161, 0.3);
-  border-radius: 8px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   min-height: 50px;
   display: flex;
   align-items: center;
@@ -106,25 +89,16 @@ const NavButton = styled.button`
 
   &:hover, &:focus {
     color: #facc15;
-    background: linear-gradient(45deg, rgba(250, 204, 21, 0.2), rgba(255, 77, 166, 0.2));
-    box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
     animation: pulse 1.5s infinite;
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(247, 231, 161, 0.4);
-  }
-
   @media (max-width: 768px) {
-    padding: 0.5rem;
+    padding: 0.4rem;
     min-height: 48px;
     min-width: 48px;
-    border-radius: 50%;
-    border: 1px solid #facc15;
 
     .icon {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
 
     .text {
@@ -133,19 +107,17 @@ const NavButton = styled.button`
 
     &:hover, &:focus {
       color: #facc15;
-      background: rgba(250, 204, 21, 0.3);
-      box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
       animation: pulse 1s infinite;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 0.4rem;
+    padding: 0.3rem;
     min-height: 44px;
     min-width: 44px;
 
     .icon {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
   }
 `;
@@ -154,14 +126,13 @@ const FollowButton = styled.a`
   font-family: 'Russo One', sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
   font-weight: 400;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   color: #ffffff;
-  background: transparent;
-  border: 1px solid rgba(247, 231, 161, 0.3);
-  border-radius: 8px;
+  background: none;
+  border: none;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   min-height: 50px;
   display: flex;
   align-items: center;
@@ -169,25 +140,16 @@ const FollowButton = styled.a`
 
   &:hover, &:focus {
     color: #facc15;
-    background: linear-gradient(45deg, rgba(250, 204, 21, 0.2), rgba(255, 77, 166, 0.2));
-    box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
     animation: pulse 1.5s infinite;
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(247, 231, 161, 0.4);
-  }
-
   @media (max-width: 768px) {
-    padding: 0.5rem;
+    padding: 0.4rem;
     min-height: 48px;
     min-width: 48px;
-    border-radius: 50%;
-    border: 1px solid #facc15;
 
     .icon {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
 
     .text {
@@ -196,48 +158,34 @@ const FollowButton = styled.a`
 
     &:hover, &:focus {
       color: #facc15;
-      background: rgba(250, 204, 21, 0.3);
-      box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
       animation: pulse 1s infinite;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 0.4rem;
+    padding: 0.3rem;
     min-height: 44px;
     min-width: 44px;
 
     .icon {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
   }
 `;
 
-const Navbar = ({ bannerRef, chatRef, chatBannerRef }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+const Navbar = ({ bannerRef, chatBannerRef }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navLinksRef = useRef(null);
 
   useEffect(() => {
-    let scrollTimeout;
-    const handleScrollEvent = () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        setIsScrolled(window.scrollY > 0);
-      }, 100);
-    };
-
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    window.addEventListener('scroll', handleScrollEvent);
     window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('scroll', handleScrollEvent);
       window.removeEventListener('resize', handleResize);
-      clearTimeout(scrollTimeout);
     };
   }, []);
 
@@ -268,7 +216,7 @@ const Navbar = ({ bannerRef, chatRef, chatBannerRef }) => {
   return (
     <>
       <GlobalStyles />
-      <StyledNavbar isScrolled={isScrolled}>
+      <StyledNavbar>
         <Logo onClick={() => handleScroll(bannerRef)}>
           <img src={logo} alt="GTA Logo" />
         </Logo>

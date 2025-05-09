@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import grandThertAuto from "../../assets/gta-logo-1.png";
-import vigta6 from "../../assets/gta-6.png";
+import grandTheftAuto from "../../assets/gta-logo-1.png";
+import gta6 from "../../assets/gta-6.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,17 +15,21 @@ const BannerContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   color: #fff;
-  padding: 80px 13rem 2rem;
+  padding: 2rem 13rem;
   position: relative;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
   opacity: 1;
-  z-index: 1;
+  margin: -5rem 0 0 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 60px 1rem 1rem;
-    gap: 2rem;
+    padding: 1rem 0.75rem;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.75rem 0.5rem;
   }
 `;
 
@@ -34,14 +38,12 @@ const LeftSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   max-width: 40%;
-  gap: 0.5rem;
-    margin: -4rem 0 0 0;
+  gap: 1rem;
 
   @media (max-width: 768px) {
     max-width: 100%;
-        margin: 0 0 0 0;
-
     align-items: center;
+    gap: 0.8rem;
   }
 `;
 
@@ -51,27 +53,30 @@ const RightSection = styled.div`
   align-items: flex-end;
   max-width: 40%;
   gap: 1rem;
-      margin: -4rem 0 0 0;
-
 
   @media (max-width: 768px) {
     max-width: 100%;
     align-items: center;
-
+    gap: 0.8rem;
   }
 `;
 
-const LogoImage = styled.img`
-  width: 350px;
-  height: auto;
+const LeftHeader = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const LogoImagegrandTheftAuto = styled.img`
+  width: clamp(400px, 50vw, 300px);
+  height: 400px;
   object-fit: contain;
+  margin-left: -60px;
 
   @media (max-width: 768px) {
-    width: 200px;
-  }
-
-  @media (max-width: 639px) {
-    width: 180px;
+    width: clamp(260px, 40vw, 200px);
+      margin-left: 0px;
 
   }
 `;
@@ -83,40 +88,48 @@ const WatchTrailerButton = styled.button`
   font-weight: 600;
   text-transform: uppercase;
   color: #ffffff;
-  background: #ae206e;
+  background: #690e4d;
   border: none;
-    margin: -4rem 0 0 0;
-
-  border-radius: 8px;
+  border-radius: 18px;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(174, 32, 110, 0.4);
   transition: all 0.3s ease;
+  min-height: 48px;
+  margin-top: -100px;
 
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(174, 32, 110, 0.6), 0 0 30px rgba(174, 32, 110, 0.4);
   }
 
-  @media (max-width: 639px) {
-          margin: 0 0 0 0;
-
+  @media (max-width: 768px) {
     padding: 0.6rem 1.5rem;
     font-size: clamp(0.9rem, 1.2vw, 1rem);
+    min-height: 44px;
+  }
+`;
+
+const LogoImage = styled.img`
+  width: clamp(250px, 50vw, 300px);
+  height: auto;
+  object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: clamp(160px, 40vw, 200px);
   }
 `;
 
 const Card = styled.div`
   background: ${props => props.background || 'linear-gradient(135deg, rgba(26, 14, 42, 0.22), rgba(60, 26, 90, 0.24))'};
   border-radius: 12px;
-  padding: 1.5rem;
-  border: 2px solid ${props => props.borderColor || 'rgba(247, 231, 161, 0.2)'};
+  padding: 1.2rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   backdrop-filter: ${props => props.backdropFilter || 'blur(8px)'};
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   width: 100%;
-  max-width: 400px;
+  max-width: 470px;
 
   &:hover {
     transform: scale(1.03);
@@ -141,7 +154,7 @@ const Card = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 0.8rem;
     max-width: 100%;
   }
 `;
@@ -183,12 +196,11 @@ const CardDescription = styled.p`
   }
 `;
 
-const Banner = ({ chatRef, chatBannerRef }) => {
+const Banner = ({ bannerRef, chatBannerRef }) => {
   const containerRef = useRef(null);
   const leftSectionRef = useRef(null);
   const rightSectionRef = useRef(null);
   const buttonRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const cards = [
     {
@@ -206,7 +218,7 @@ const Banner = ({ chatRef, chatBannerRef }) => {
       titleColor: '#ffffff',
       borderColor: 'rgba(0, 247, 255, 0.3)',
       borderHoverColor: '#00f7ff',
-      background: '#cc2777',
+      background: '#690e4d',
     },
   ];
 
@@ -253,15 +265,16 @@ const Banner = ({ chatRef, chatBannerRef }) => {
   const handleScroll = () => {
     if (chatBannerRef && chatBannerRef.current) {
       chatBannerRef.current.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
     }
   };
 
   return (
     <BannerContainer ref={containerRef}>
       <LeftSection ref={leftSectionRef}>
-        <LogoImage src={grandThertAuto} alt="Grand Theft Auto Logo" />
-        <WatchTrailerButton ref={buttonRef}>Watch Trailer</WatchTrailerButton>
+        <LeftHeader>
+          <LogoImagegrandTheftAuto src={grandTheftAuto} alt="Grand Theft Auto Logo" />
+          <WatchTrailerButton ref={buttonRef} aria-label="Watch Trailer">Watch Trailer</WatchTrailerButton>
+        </LeftHeader>
         <TransparentCard
           borderColor={cards[0].borderColor}
           borderHoverColor={cards[0].borderHoverColor}
@@ -271,7 +284,7 @@ const Banner = ({ chatRef, chatBannerRef }) => {
         </TransparentCard>
       </LeftSection>
       <RightSection ref={rightSectionRef}>
-        <LogoImage src={vigta6} alt="GTA VI Logo" />
+        <LogoImage src={gta6} alt="GTA VI Logo" />
         <Card
           borderColor={cards[1].borderColor}
           borderHoverColor={cards[1].borderHoverColor}
