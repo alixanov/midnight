@@ -1,11 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import grandTheftAuto from "../../assets/gta-logo-1.png";
 import gta6 from "../../assets/gta-6.png";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Global styles for font-face
+const GlobalStyles = createGlobalStyle`
+  @font-face {
+    src: url(../src/components/styles/Pricedown\\ Bl.otf);
+    font-family: "Pricedown";
+  }
+
+`;
 
 const BannerContainer = styled.div`
   min-height: 100vh;
@@ -76,14 +85,13 @@ const LogoImagegrandTheftAuto = styled.img`
 
   @media (max-width: 768px) {
     width: clamp(260px, 40vw, 200px);
-      margin-left: 0px;
-
+    margin-left: 0px;
   }
 `;
 
 const WatchTrailerButton = styled.button`
   padding: 0.8rem 2rem;
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(1rem, 1.5vw, 1.1rem);
   font-weight: 600;
   text-transform: uppercase;
@@ -170,24 +178,23 @@ const TransparentCard = styled(Card)`
 `;
 
 const CardTitle = styled.h3`
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(1.5rem, 2vw, 1.8rem);
   font-weight: 400;
   color: ${props => props.color || '#f7e7a1'};
   text-shadow: ${props => `0 0 6px ${props.color ? props.color + '66' : 'rgba(247, 231, 161, 0.4)'}`};
   margin: 0 0 0.5rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 
   @media (max-width: 768px) {
-        text-align: center;
-
+    text-align: center;
     font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   }
 `;
 
 const CardDescription = styled.p`
-  font-family: 'Inter', sans-serif;
+    font-family: "Oswald-VariableFont";
   font-size: clamp(0.9rem, 1.3vw, 1rem);
   color: #d1d5db;
   line-height: 1.6;
@@ -195,7 +202,7 @@ const CardDescription = styled.p`
 
   @media (max-width: 768px) {
     font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-      text-align: center;
+    text-align: center;
   }
 `;
 
@@ -272,33 +279,36 @@ const Banner = ({ bannerRef, chatBannerRef }) => {
   };
 
   return (
-    <BannerContainer ref={containerRef}>
-      <LeftSection ref={leftSectionRef}>
-        <LeftHeader>
-          <LogoImagegrandTheftAuto src={grandTheftAuto} alt="Grand Theft Auto Logo" />
-          <WatchTrailerButton ref={buttonRef} aria-label="Watch Trailer">Watch Trailer</WatchTrailerButton>
-        </LeftHeader>
-        <TransparentCard
-          borderColor={cards[0].borderColor}
-          borderHoverColor={cards[0].borderHoverColor}
-        >
-          <CardTitle color={cards[0].titleColor}>{cards[0].title}</CardTitle>
-          <CardDescription>{cards[0].description}</CardDescription>
-        </TransparentCard>
-      </LeftSection>
-      <RightSection ref={rightSectionRef}>
-        <LogoImage src={gta6} alt="GTA VI Logo" />
-        <Card
-          borderColor={cards[1].borderColor}
-          borderHoverColor={cards[1].borderHoverColor}
-          background={cards[1].background}
-          backdropFilter="blur(8px)"
-        >
-          <CardTitle color={cards[1].titleColor}>{cards[1].title}</CardTitle>
-          <CardDescription>{cards[1].description}</CardDescription>
-        </Card>
-      </RightSection>
-    </BannerContainer>
+    <>
+      <GlobalStyles />
+      <BannerContainer ref={containerRef}>
+        <LeftSection ref={leftSectionRef}>
+          <LeftHeader>
+            <LogoImagegrandTheftAuto src={grandTheftAuto} alt="Grand Theft Auto Logo" />
+            <WatchTrailerButton ref={buttonRef} aria-label="Watch Trailer">Watch Trailer</WatchTrailerButton>
+          </LeftHeader>
+          <TransparentCard
+            borderColor={cards[0].borderColor}
+            borderHoverColor={cards[0].borderHoverColor}
+          >
+            <CardTitle color={cards[0].titleColor}>{cards[0].title}</CardTitle>
+            <CardDescription>{cards[0].description}</CardDescription>
+          </TransparentCard>
+        </LeftSection>
+        <RightSection ref={rightSectionRef}>
+          <LogoImage src={gta6} alt="GTA VI Logo" />
+          <Card
+            borderColor={cards[1].borderColor}
+            borderHoverColor={cards[1].borderHoverColor}
+            background={cards[1].background}
+            backdropFilter="blur(8px)"
+          >
+            <CardTitle color={cards[1].titleColor}>{cards[1].title}</CardTitle>
+            <CardDescription>{cards[1].description}</CardDescription>
+          </Card>
+        </RightSection>
+      </BannerContainer>
+    </>
   );
 };
 

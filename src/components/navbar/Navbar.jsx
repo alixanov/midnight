@@ -3,9 +3,16 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { gsap } from 'gsap';
 import { Home as HomeIcon, CameraAlt as CameraAltIcon, RssFeed as RssFeedIcon } from '@mui/icons-material';
 import logo from "../../assets/gta-logo.png";
+import XIcon from '@mui/icons-material/X';
+import AssistantIcon from '@mui/icons-material/Assistant';
 
-// Global keyframes for animations
+// Global styles including font-face and keyframes
 const GlobalStyles = createGlobalStyle`
+  @font-face {
+    src: url(../src/components/styles/Pricedown\\ Bl.otf);
+    font-family: "Pricedown";
+  }
+
   @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -22,11 +29,14 @@ const StyledNavbar = styled.nav`
   background: transparent;
 
   @media (max-width: 768px) {
-    padding: 0.5rem 0.75rem;
+    padding: 1rem;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(247, 231, 161, 0.2);
   }
 
   @media (max-width: 480px) {
-    padding: 0.4rem 0.5rem;
+    padding: 0.75rem;
   }
 `;
 
@@ -46,13 +56,19 @@ const Logo = styled.div`
 
   @media (max-width: 768px) {
     img {
-      width: clamp(32px, 8vw, 36px);
+      width: clamp(36px, 10vw, 40px);
+    }
+
+    &:hover {
+      img {
+        filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.8));
+      }
     }
   }
 
   @media (max-width: 480px) {
     img {
-      width: 32px;
+      width: 36px;
     }
   }
 `;
@@ -65,15 +81,18 @@ const NavLinks = styled.div`
   opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease;
+  
 
   @media (max-width: 768px) {
-    gap: 0.4rem;
-    justify-content: flex-end;
+    gap: 0.8rem;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 12px;
   }
 `;
 
 const NavButton = styled.button`
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
   font-weight: 400;
   padding: 0.5rem 1rem;
@@ -81,21 +100,34 @@ const NavButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, filter 0.3s ease;
   min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 
+
+  .icon {
+    color: #ffffff;
+    transition: color 0.3s ease, filter 0.3s ease;
+  }
+
   &:hover, &:focus {
     color: #facc15;
+    .icon {
+      color: #facc15;
+      filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
+    }
     animation: pulse 1.5s infinite;
   }
 
   @media (max-width: 768px) {
-    padding: 0.4rem;
+    padding: 0.5rem;
     min-height: 48px;
     min-width: 48px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(247, 231, 161, 0.3);
+    background: rgba(27, 10, 41, 0.2);
 
     .icon {
       font-size: 1.4rem;
@@ -107,12 +139,17 @@ const NavButton = styled.button`
 
     &:hover, &:focus {
       color: #facc15;
-      animation: pulse 1s infinite;
+      .icon {
+        color: #facc15;
+        filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
+      }
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
+      animation: pulse 1.8s infinite;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 0.3rem;
+    padding: 0.4rem;
     min-height: 44px;
     min-width: 44px;
 
@@ -123,7 +160,7 @@ const NavButton = styled.button`
 `;
 
 const FollowButton = styled.a`
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
   font-weight: 400;
   padding: 0.5rem 1rem;
@@ -132,21 +169,33 @@ const FollowButton = styled.a`
   border: none;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, filter 0.3s ease;
   min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  .icon {
+    color: #ffffff;
+    transition: color 0.3s ease, filter 0.3s ease;
+  }
+
   &:hover, &:focus {
     color: #facc15;
+    .icon {
+      color: #facc15;
+      filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
+    }
     animation: pulse 1.5s infinite;
   }
 
   @media (max-width: 768px) {
-    padding: 0.4rem;
+    padding: 0.5rem;
     min-height: 48px;
     min-width: 48px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(247, 231, 161, 0.3);
+    background: rgba(27, 10, 41, 0.2);
 
     .icon {
       font-size: 1.4rem;
@@ -158,12 +207,17 @@ const FollowButton = styled.a`
 
     &:hover, &:focus {
       color: #facc15;
-      animation: pulse 1s infinite;
+      .icon {
+        color: #facc15;
+        filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
+      }
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
+      animation: pulse 1.8s infinite;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 0.3rem;
+    padding: 0.4rem;
     min-height: 44px;
     min-width: 44px;
 
@@ -234,7 +288,7 @@ const Navbar = ({ bannerRef, chatBannerRef }) => {
             onClick={() => handleScroll(chatBannerRef)}
             aria-label="Go to Capture"
           >
-            {isMobile && <CameraAltIcon className="icon" />}
+            {isMobile && <AssistantIcon className="icon" />}
             <span className="text">Capture</span>
           </NavButton>
           <FollowButton
@@ -243,7 +297,7 @@ const Navbar = ({ bannerRef, chatBannerRef }) => {
             rel="noopener noreferrer"
             aria-label="Follow on X"
           >
-            {isMobile && <RssFeedIcon className="icon" />}
+            {isMobile && <XIcon className="icon" />}
             <span className="text">Follow Us</span>
           </FollowButton>
         </NavLinks>

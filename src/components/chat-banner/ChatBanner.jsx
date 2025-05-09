@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { gsap } from 'gsap';
 import { Lock } from '@mui/icons-material';
 import LibertyCityImg from "../../assets/statue-of-liberty.png";
@@ -11,6 +11,18 @@ import LosSantosBg from '../../assets/bg.png';
 import LibertyCity from "../../assets/backiee-301324-landscape.jpg";
 import grandTheftAuto from "../../assets/gta-logo-1.png";
 import gta6 from "../../assets/gta-6.png";
+
+// Global styles for font-face
+const GlobalStyles = createGlobalStyle`
+  @font-face {
+    src: url(../src/components/styles/Pricedown\\ Bl.otf);
+    font-family: "Pricedown";
+  }
+     @font-face {
+    src: url(../src/components/styles/Oswald-VariableFont_wght.ttf);
+    font-family: "Oswald-VariableFont";
+  }
+`;
 
 const ChatBannerContainer = styled.section`
   min-height: 100vh;
@@ -62,11 +74,11 @@ const LogoImage = styled.img`
 `;
 
 const Title = styled.h2`
-  font-family: 'Tilt Prism', sans-serif;
-  font-size: clamp(3.8rem, 4vw, 2.6rem);
-  font-weight: 500;
+    font-family: "Pricedown";
+  font-size: clamp(4.8rem, 4vw, 2.6rem);
+  font-weight: 900;
   text-transform: uppercase;
-  color: #facc15;
+  color: white;
   text-shadow: 0 0 12px rgba(247, 231, 161, 0.5), 0 0 20px rgba(124, 58, 237, 0.3);
   margin: 0;
   margin-top: -100px;
@@ -74,8 +86,7 @@ const Title = styled.h2`
 
   @media (max-width: 768px) {
     font-weight: 600;
-      margin-top: -50px;
-
+    margin-top: -50px;
     font-size: clamp(1.8rem, 3vw, 1.8rem);
   }
 `;
@@ -190,13 +201,13 @@ const CardImage = styled.img`
 `;
 
 const CardTitle = styled.h3`
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(2rem, 1.4vw, 1.1rem);
   font-weight: 700;
   color: ${props => props.color || '#f7e7a1'};
   text-shadow: ${props => `0 0 6px ${props.color ? props.color + '80' : 'rgba(247, 231, 161, 0.4)'}`};
   margin: 0 0 1rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   line-height: 1.2;
 
   @media (max-width: 768px) {
@@ -206,13 +217,13 @@ const CardTitle = styled.h3`
 `;
 
 const CardDescription = styled.p`
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(0.8rem, 1vw, 0.9rem);
   font-weight: 700;
   color: #d1d5db;
   line-height: 1.2;
   margin: 0 0 0.5rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -225,7 +236,7 @@ const CardDescription = styled.p`
 `;
 
 const JoinButton = styled.button`
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Pricedown', sans-serif;
   font-size: clamp(0.8rem, 0.9vw, 0.9rem);
   font-weight: 700;
   padding: 0.1rem 0.8rem;
@@ -247,6 +258,7 @@ const JoinButton = styled.button`
   gap: 0.2rem;
   opacity: ${props => (props.locked ? 0.7 : 1)};
   min-height: 40px;
+  letter-spacing: 0.03em;
 
   &:hover {
     ${props =>
@@ -283,13 +295,15 @@ const LogoImagegrandTheftAuto = styled.img`
 `;
 
 const Description = styled.div`
-  font-family: 'Russo One', sans-serif;
-  font-size: clamp(0.8rem, 1vw, 0.9rem);
+    font-family: "Oswald-VariableFont";
+  font-size: clamp(1rem, 1vw, 0.9rem);
+  font-weight: 400;
   color: #ffffff;
   line-height: 1.4;
   text-align: center;
   margin-top: 2rem;
   max-width: 800px;
+  letter-spacing: 0.03em;
 
   @media (max-width: 768px) {
     font-size: clamp(0.75rem, 0.9vw, 0.85rem);
@@ -395,60 +409,63 @@ const ChatBanner = ({ chatRef }) => {
   };
 
   return (
-    <ChatBannerContainer ref={chatRef}>
-      <TitleContainer ref={titleRef}>
-        <LogoImagegrandTheftAuto src={grandTheftAuto} alt="Grand Theft Auto Logo" />
-        <LogoImage src={gta6} alt="GTA VI Logo" />
-      </TitleContainer>
-      <Title>Online Chat Servers</Title>
-      <CardGrid ref={gridRef}>
-        {servers.map((server, index) => {
-          const rgb = server.color.match(/[A-Za-z0-9]{2}/g)?.map(hex => parseInt(hex, 16)) || [247, 231, 161];
-          const shadowColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5)`;
+    <>
+      <GlobalStyles />
+      <ChatBannerContainer ref={chatRef}>
+        {/* <TitleContainer ref={titleRef}>
+          <LogoImagegrandTheftAuto src={grandTheftAuto} alt="Grand Theft Auto Logo" />
+          <LogoImage src={gta6} alt="GTA VI Logo" />
+        </TitleContainer> */}
+        <Title ref={titleRef}>Online Chat Servers</Title>
+        <CardGrid ref={gridRef}>
+          {servers.map((server, index) => {
+            const rgb = server.color.match(/[A-Za-z0-9]{2}/g)?.map(hex => parseInt(hex, 16)) || [247, 231, 161];
+            const shadowColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5)`;
 
-          return (
-            <Card
-              key={index}
-              className="card"
-              locked={server.locked}
-              shadowColor={shadowColor}
-              borderHoverColor={server.color}
-              onClick={() => handleCardClick(server.locked, server.background, server.city)}
-              aria-label={server.locked ? `${server.name} server (locked)` : `Join ${server.name} chat`}
-            >
-              <CardImage src={server.image} alt={`${server.name} server`} />
-              <CardTxt>
-                <CardTitle color={server.color}>{server.name}</CardTitle>
-                <CardDescription>{server.description}</CardDescription>
-                <JoinButton
-                  locked={server.locked}
-                  onClick={() => handleCardClick(server.locked, server.background, server.city)}
-                  disabled={server.locked}
-                  aria-label={server.locked ? 'Server locked' : 'Join server'}
-                >
-                  {server.locked ? (
-                    <>
-                      <LockIcon />
-                      Locked
-                    </>
-                  ) : (
-                    'Join Server'
-                  )}
-                </JoinButton>
-              </CardTxt>
-            </Card>
-          );
-        })}
-      </CardGrid>
-      <Description role="region" aria-label="Chat Room Description">
-        <p>Gear up for epic chats in our GTA servers!</p>
-        <p>Join Los Santos or Liberty City to connect with crews and plan heists.</p>
-        <p>Unlock Vice City and Blaine County soon—stay tuned!</p>
-        <p>Form alliances, strategize your next big score, and dominate the streets.</p>
-        <p>Exclusive events and high-stakes challenges await—will you rise to the top?</p>
-        <p>Gather your crew, sharpen your skills, and own the city like never before!</p>
-      </Description>
-    </ChatBannerContainer>
+            return (
+              <Card
+                key={index}
+                className="card"
+                locked={server.locked}
+                shadowColor={shadowColor}
+                borderHoverColor={server.color}
+                onClick={() => handleCardClick(server.locked, server.background, server.city)}
+                aria-label={server.locked ? `${server.name} server (locked)` : `Join ${server.name} chat`}
+              >
+                <CardImage src={server.image} alt={`${server.name} server`} />
+                <CardTxt>
+                  <CardTitle color={server.color}>{server.name}</CardTitle>
+                  <CardDescription>{server.description}</CardDescription>
+                  <JoinButton
+                    locked={server.locked}
+                    onClick={() => handleCardClick(server.locked, server.background, server.city)}
+                    disabled={server.locked}
+                    aria-label={server.locked ? 'Server locked' : 'Join server'}
+                  >
+                    {server.locked ? (
+                      <>
+                        <LockIcon />
+                        Locked
+                      </>
+                    ) : (
+                      'Join Server'
+                    )}
+                  </JoinButton>
+                </CardTxt>
+              </Card>
+            );
+          })}
+        </CardGrid>
+        <Description role="region" aria-label="Chat Room Description">
+          <p>Gear up for epic chats in our GTA servers!</p>
+          <p>Join Los Santos or Liberty City to connect with crews and plan heists.</p>
+          <p>Unlock Vice City and Blaine County soon—stay tuned!</p>
+          <p>Form alliances, strategize your next big score, and dominate the streets.</p>
+          <p>Exclusive events and high-stakes challenges await—will you rise to the top?</p>
+          <p>Gather your crew, sharpen your skills, and own the city like never before!</p>
+        </Description>
+      </ChatBannerContainer>
+    </>
   );
 };
 

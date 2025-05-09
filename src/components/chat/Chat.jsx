@@ -118,7 +118,7 @@ const ChatWrapper = styled.div`
 `;
 
 const WelcomeMessage = styled.div`
-  font-family: 'Pricedown', 'Russo One', 'Impact', sans-serif;
+    font-family: "Pricedown";
   font-size: clamp(1rem, 1.5vw, 1.2rem);
   color: #fad028;
   text-shadow: 0 0 8px rgba(250, 208, 40, 0.6);
@@ -208,7 +208,7 @@ const MessageContent = styled.div`
 `;
 
 const Username = styled.div`
-  font-family: 'Pricedown', 'Russo One', 'Impact', sans-serif;
+    font-family: "Pricedown";
   font-size: clamp(0.85rem, 1.1vw, 0.95rem);
   color: #fad028;
   font-weight: 400;
@@ -220,7 +220,7 @@ const Username = styled.div`
 `;
 
 const MessageText = styled.p`
-  font-family: 'Russo One', sans-serif;
+    font-family: "Oswald-VariableFont";
   font-size: clamp(0.8rem, 1vw, 0.9rem);
   color: #e0e0e0;
   margin: 0;
@@ -245,7 +245,7 @@ const Timestamp = styled.span`
 `;
 
 const TypingIndicator = styled.div`
-  font-family: 'Russo One', sans-serif;
+    font-family: "Pricedown";
   font-size: clamp(0.8rem, 1vw, 0.9rem);
   color: #fad028;
   font-style: italic;
@@ -285,7 +285,7 @@ const InputContainer = styled.form`
 const Input = styled.input`
   flex: 1;
   padding: 0.5rem;
-  font-family: 'Russo One', sans-serif;
+    font-family: "Pricedown";
   font-size: clamp(0.8rem, 1vw, 0.9rem);
   color: #e0e0e0;
   background: rgba(32, 14, 48, 0.9);
@@ -306,7 +306,7 @@ const Input = styled.input`
 
 const SendButton = styled.button`
   padding: 0.5rem 1rem;
-  font-family: 'Russo One', sans-serif;
+    font-family: "Pricedown";
   font-size: clamp(0.8rem, 1vw, 0.9rem);
   color: #200e30;
   background: #fad028;

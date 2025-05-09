@@ -1,16 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+// Global styles for font-face
+const GlobalStyles = createGlobalStyle`
+  @font-face {
+    src: url(../src/components/styles/Pricedown\\ Bl.otf);
+    font-family: "Pricedown";
+  }
+`;
 
 const FooterContainer = styled.footer`
   width: 100%;
-    background: linear-gradient(135deg, rgba(15, 10, 30, 0.66), rgba(35, 9, 52, 0.77));
+  background: linear-gradient(135deg, rgba(15, 10, 30, 0.66), rgba(35, 9, 52, 0.77));
   padding: 2rem 13rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-family: 'Russo One', sans-serif;
+    font-family: "Oswald-VariableFont";
   z-index: 2;
 
   @media (max-width: 768px) {
@@ -20,9 +28,11 @@ const FooterContainer = styled.footer`
 
 const FooterText = styled.p`
   font-size: clamp(0.9rem, 1vw, 1rem);
+  font-weight: 400;
   margin: 0 0 1rem;
   text-align: center;
   text-shadow: 0 0 6px rgba(247, 231, 161, 0.4);
+  letter-spacing: 0.03em;
 `;
 
 const FooterLinks = styled.div`
@@ -32,9 +42,11 @@ const FooterLinks = styled.div`
 
 const FooterLink = styled.a`
   font-size: clamp(0.85rem, 0.9vw, 0.95rem);
+  font-weight: 700;
   color: #facc15;
   text-decoration: none;
   transition: color 0.3s ease;
+  letter-spacing: 0.03em;
 
   &:hover {
     color: #ff4da6;
@@ -43,16 +55,19 @@ const FooterLink = styled.a`
 
 const Footer = () => {
   return (
-    <FooterContainer>
-      <FooterText>© 2025 GTA Online Community. All rights reserved.</FooterText>
-      <FooterLinks>
-        <FooterLink href="https://x.com/" target="_blank" rel="noopener noreferrer">
-          Follow Us
-        </FooterLink>
-        <FooterLink>Privacy Policy</FooterLink>
-        <FooterLink >Terms of Service</FooterLink>
-      </FooterLinks>
-    </FooterContainer>
+    <>
+      <GlobalStyles />
+      <FooterContainer>
+        <FooterText>© 2025 GTA Online Community. All rights reserved.</FooterText>
+        <FooterLinks>
+          <FooterLink href="https://x.com/" target="_blank" rel="noopener noreferrer">
+            Follow Us
+          </FooterLink>
+          <FooterLink href="#">Privacy Policy</FooterLink>
+          <FooterLink href="#">Terms of Service</FooterLink>
+        </FooterLinks>
+      </FooterContainer>
+    </>
   );
 };
 
