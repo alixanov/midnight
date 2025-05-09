@@ -49,8 +49,8 @@ const Footer = () => {
         <FooterLink href="https://x.com/" target="_blank" rel="noopener noreferrer">
           Follow Us
         </FooterLink>
-        <FooterLink href="/privacy">Privacy Policy</FooterLink>
-        <FooterLink href="/terms">Terms of Service</FooterLink>
+        <FooterLink>Privacy Policy</FooterLink>
+        <FooterLink >Terms of Service</FooterLink>
       </FooterLinks>
     </FooterContainer>
   );
