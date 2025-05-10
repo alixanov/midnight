@@ -43,13 +43,13 @@ const FooterLinks = styled.div`
 const FooterLink = styled.a`
   font-size: clamp(0.85rem, 0.9vw, 0.95rem);
   font-weight: 700;
-  color: #facc15;
+    color: #ff4da6;
   text-decoration: none;
   transition: color 0.3s ease;
   letter-spacing: 0.03em;
 
   &:hover {
-    color: #ff4da6;
+    color:rgb(131, 0, 91);
   }
 `;
 

@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { gsap } from 'gsap';
-import { Home as HomeIcon, CameraAlt as CameraAltIcon, RssFeed as RssFeedIcon } from '@mui/icons-material';
+import { Home as HomeIcon, Assistant as AssistantIcon, X as XIcon } from '@mui/icons-material';
 import logo from "../../assets/gta-logo.png";
-import XIcon from '@mui/icons-material/X';
-import AssistantIcon from '@mui/icons-material/Assistant';
 
 // Global styles including font-face and keyframes
 const GlobalStyles = createGlobalStyle`
@@ -27,6 +25,8 @@ const StyledNavbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   background: transparent;
+  z-index: 10;
+  position: relative;
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -43,14 +43,18 @@ const StyledNavbar = styled.nav`
 const Logo = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  pointer-events: auto;
 
   img {
     width: clamp(40px, 10vw, 45px);
+    transition: all 0.3s ease;
   }
 
   &:hover {
     img {
-      filter: drop-shadow(0 0 6px rgba(247, 231, 161, 0.6));
+      filter: drop-shadow(0 0 6px rgba(255, 69, 215, 0.6));
+      transform: scale(1.1);
     }
   }
 
@@ -61,7 +65,7 @@ const Logo = styled.div`
 
     &:hover {
       img {
-        filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.8));
+        filter: drop-shadow(0 0 8px hsla(325, 100.00%, 59.60%, 0.80));
       }
     }
   }
@@ -81,7 +85,6 @@ const NavLinks = styled.div`
   opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease;
-  
 
   @media (max-width: 768px) {
     gap: 0.8rem;
@@ -91,34 +94,48 @@ const NavLinks = styled.div`
   }
 `;
 
-const NavButton = styled.button`
-  font-family: 'Pricedown', sans-serif;
-  font-size: clamp(0.9rem, 1vw, 1rem);
-  font-weight: 400;
+const ButtonBase = styled.div`
+  font-family: "Oswald-VariableFont";
+  font-size: clamp(1.1rem, 1vw, 1rem);
+  font-weight: 900;
+  letter-spacing: 0.05em; /* Добавлено */
   padding: 0.5rem 1rem;
   color: #ffffff;
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease, filter 0.3s ease;
+  transition: all 0.2s ease;
   min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  gap: 0.5rem;
+  position: relative;
+  pointer-events: auto;
+  border-radius: 8px;
 
   .icon {
     color: #ffffff;
-    transition: color 0.3s ease, filter 0.3s ease;
+    transition: all 0.2s ease;
+    display: none;
   }
 
-  &:hover, &:focus {
-    color: #facc15;
+  .text {
+    transition: all 0.2s ease;
+    letter-spacing: 0.05em; /* Добавлено */
+  }
+
+  &:hover {
+    color: #ff4da6;
+    
     .icon {
-      color: #facc15;
-      filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
+      color: #ff4da6;
     }
-    animation: pulse 1.5s infinite;
+    
+    .text {
+      transform: translateY(-1px);
+      text-shadow: rgba(255, 77, 166, 0.7);
+    }
   }
 
   @media (max-width: 768px) {
@@ -126,10 +143,10 @@ const NavButton = styled.button`
     min-height: 48px;
     min-width: 48px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(247, 231, 161, 0.3);
     background: rgba(27, 10, 41, 0.2);
 
     .icon {
+      display: block;
       font-size: 1.4rem;
     }
 
@@ -137,14 +154,8 @@ const NavButton = styled.button`
       display: none;
     }
 
-    &:hover, &:focus {
-      color: #facc15;
-      .icon {
-        color: #facc15;
-        filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
-      }
-      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
-      animation: pulse 1.8s infinite;
+    &:hover {
+      box-shadow: 0 4px 12px rgba(255, 50, 187, 0.2);
     }
   }
 
@@ -159,75 +170,27 @@ const NavButton = styled.button`
   }
 `;
 
-const FollowButton = styled.a`
-  font-family: 'Pricedown', sans-serif;
-  font-size: clamp(0.9rem, 1vw, 1rem);
-  font-weight: 400;
-  padding: 0.5rem 1rem;
-  color: #ffffff;
-  background: none;
-  border: none;
+
+const NavButton = styled(ButtonBase).attrs({ as: 'button' })`
+  // Additional button-specific styles if needed
+`;
+
+const FollowButton = styled(ButtonBase).attrs({ as: 'a' })`
   text-decoration: none;
-  cursor: pointer;
-  transition: color 0.3s ease, filter 0.3s ease;
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   .icon {
-    color: #ffffff;
-    transition: color 0.3s ease, filter 0.3s ease;
+    display: block;
   }
 
-  &:hover, &:focus {
-    color: #facc15;
+
+  @media (min-width: 769px) {
     .icon {
-      color: #facc15;
-      filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
-    }
-    animation: pulse 1.5s infinite;
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-    min-height: 48px;
-    min-width: 48px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(247, 231, 161, 0.3);
-    background: rgba(27, 10, 41, 0.2);
-
-    .icon {
-      font-size: 1.4rem;
-    }
-
-    .text {
       display: none;
-    }
-
-    &:hover, &:focus {
-      color: #facc15;
-      .icon {
-        color: #facc15;
-        filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
-      }
-      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
-      animation: pulse 1.8s infinite;
-    }
-  }
-
-  @media (max-width: 480px) {
-    padding: 0.4rem;
-    min-height: 44px;
-    min-width: 44px;
-
-    .icon {
-      font-size: 1.2rem;
     }
   }
 `;
 
-const Navbar = ({ bannerRef, chatBannerRef }) => {
+const Navbar = ({ bannerRef, chatBannerRef, chatRef }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navLinksRef = useRef(null);
 
@@ -261,9 +224,14 @@ const Navbar = ({ bannerRef, chatBannerRef }) => {
     }
   }, [isMobile]);
 
-  const handleScroll = (ref) => {
+  const handleScroll = (ref, label) => {
     if (ref && ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth' });
+      ref.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+      console.warn(`Ref for ${label} is undefined or invalid`);
     }
   };
 
@@ -271,24 +239,24 @@ const Navbar = ({ bannerRef, chatBannerRef }) => {
     <>
       <GlobalStyles />
       <StyledNavbar>
-        <Logo onClick={() => handleScroll(bannerRef)}>
+        <Logo onClick={() => handleScroll(bannerRef, 'Logo')}>
           <img src={logo} alt="GTA Logo" />
         </Logo>
         <NavLinks id="nav-links" ref={navLinksRef}>
           <NavButton
             type="button"
-            onClick={() => handleScroll(bannerRef)}
+            onClick={() => handleScroll(bannerRef, 'Overview')}
             aria-label="Go to Overview"
           >
-            {isMobile && <HomeIcon className="icon" />}
+            <HomeIcon className="icon" />
             <span className="text">Overview</span>
           </NavButton>
           <NavButton
             type="button"
-            onClick={() => handleScroll(chatBannerRef)}
+            onClick={() => handleScroll(chatBannerRef, 'Capture')}
             aria-label="Go to Capture"
           >
-            {isMobile && <AssistantIcon className="icon" />}
+            <AssistantIcon className="icon" />
             <span className="text">Capture</span>
           </NavButton>
           <FollowButton
@@ -297,8 +265,8 @@ const Navbar = ({ bannerRef, chatBannerRef }) => {
             rel="noopener noreferrer"
             aria-label="Follow on X"
           >
-            {isMobile && <XIcon className="icon" />}
             <span className="text">Follow Us</span>
+            <XIcon className="follow-icon" />
           </FollowButton>
         </NavLinks>
       </StyledNavbar>
