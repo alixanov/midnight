@@ -195,8 +195,10 @@ const CardTitle = styled.h3`
 
 const CardDescription = styled.p`
     font-family: "Oswald-VariableFont";
-  font-size: clamp(0.9rem, 1.3vw, 1rem);
+  font-size: clamp(1rem, 1.3vw, 1rem);
   color: #d1d5db;
+    font-weight: 900;
+
   line-height: 1.6;
   margin: 0;
 

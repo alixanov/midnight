@@ -297,8 +297,8 @@ const LogoImagegrandTheftAuto = styled.img`
 const Description = styled.div`
     font-family: "Oswald-VariableFont";
   font-size: clamp(1rem, 1vw, 0.9rem);
-  font-weight: 400;
-  color: #ffffff;
+  font-weight: 900;
+    color:rgb(254, 217, 235);
   line-height: 1.4;
   text-align: center;
   margin-top: 2rem;

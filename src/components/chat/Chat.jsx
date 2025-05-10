@@ -190,7 +190,7 @@ const MessageText = styled.p`
 `;
 
 const Timestamp = styled.span`
-  font-family: 'Russo One', sans-serif;
+  font-family: "Oswald-VariableFont";
   font-size: clamp(0.7rem, 0.9vw, 0.8rem);
   color: #a0a0a0;
   margin-left: 0.4rem;
