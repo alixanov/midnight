@@ -72,7 +72,7 @@ const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 70vh;
-  background: rgba(32, 14, 48, 0);
+  background:black;
   border: 2px solid #690e4d;
   border-radius: 8px;
   overflow: hidden;
